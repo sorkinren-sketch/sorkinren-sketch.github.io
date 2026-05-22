@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>故事鱼骨 · 叙事引擎</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg: #f2f2f7;
+  --surface: #ffffff;
+  --surface2: #f8f8fc;
+  --divider: #e5e5ea;
+  --text: #1c1c1e;
+  --text2: #6c6c70;
+  --text3: #aeaeb2;
+  --blue: #007aff;
+  --blue-light: rgba(0,122,255,.08);
+  --indigo: #5856d6;
+  --green: #34c759;
+  --orange: #ff9f0a;
+  --red: #ff3b30;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 3px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg: 0 4px 24px rgba(0,0,0,.1);
+}
+
+html,body{height:100%;overflow:hidden;font-family:-apple-system,'Helvetica Neue','SF Pro Text',sans-serif;background:var(--bg);color:var(--text);font-size:15px;-webkit-font-smoothing:antialiased}
+input,textarea,select,button{font-family:inherit;font-size:14px;outline:none}
+
+/* ─── 呼吸动效 ─── */
+@keyframes breathe{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(.97)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(0,122,255,.2)}50%{box-shadow:0 0 0 8px rgba(0,122,255,0)}}
+.anim-fade{animation:fadeIn .3s ease-out both}
+.anim-slide{animation:slideUp .35s ease-out both}
+
+/* ─── LAYOUT ─── */
+#app{display:flex;height:100vh;width:100vw;overflow:hidden}
+#sidebar{width:240px;min-width:240px;background:var(--surface);border-right:1px solid var(--divider);display:flex;flex-direction:column;position:relative;z-index:10}
+#canvas-wrap{flex:1;position:relative;overflow:hidden;background:var(--bg)}
+
+/* ─── SIDEBAR ─── */
+.sb-header{display:flex;align-items:center;gap:6px;padding:16px 16px 10px;font-weight:700;font-size:17px;color:var(--text)}
+.sb-header svg{width:20px;height:20px;stroke:var(--blue);fill:none;stroke-width:2}
+.sb-search{padding:0 12px 8px}
+.sb-search input{width:100%;padding:9px 14px;border-radius:10px;border:1px solid var(--divider);background:var(--bg);font-size:13px;color:var(--text);transition:all .15s}
+.sb-search input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-light)}
+.sb-search input::placeholder{color:var(--text3)}
+
+.sb-groups{flex:1;overflow-y:auto;padding:0 8px 8px;scroll-behavior:smooth}
+.sb-groups::-webkit-scrollbar{width:4px}
+.sb-groups::-webkit-scrollbar-thumb{background:var(--divider);border-radius:4px}
+
+/* 分组可折叠 */
+.tpl-group{margin-bottom:6px;animation:fadeIn .25s ease-out both}
+.tpl-group-header{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:var(--radius-sm);cursor:pointer;transition:background .15s;user-select:none;position:sticky;top:0;background:var(--surface);z-index:2}
+.tpl-group-header:hover{background:var(--surface2)}
+.tpl-group-header .gg-icon{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.tpl-group-header .gg-name{font-size:13px;font-weight:600;flex:1}
+.tpl-group-header .gg-arrow{font-size:10px;color:var(--text3);transition:transform .2s}
+.tpl-group-header.collapsed .gg-arrow{transform:rotate(-90deg)}
+.tpl-group-body{padding:2px 0 2px 8px}
+.tpl-group-body.hide{display:none}
+
+/* 预制模板卡片 */
+.tpl-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:var(--radius-sm);cursor:grab;user-select:none;transition:all .15s;border:1px solid transparent;animation:slideUp .3s ease-out both}
+.tpl-item:nth-child(1){animation-delay:0s}
+.tpl-item:nth-child(2){animation-delay:.03s}
+.tpl-item:nth-child(3){animation-delay:.06s}
+.tpl-item:nth-child(4){animation-delay:.09s}
+.tpl-item:nth-child(5){animation-delay:.12s}
+.tpl-item:hover{background:var(--blue-light);border-color:rgba(0,122,255,.15);transform:translateX(4px)}
+.tpl-item:active{cursor:grabbing;opacity:.5}
+.tpl-item .ti-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.tpl-item .ti-label{font-size:13px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* 底部按钮 */
+.sb-footer{padding:10px 12px;border-top:1px solid var(--divider);display:flex;gap:6px;flex-wrap:wrap}
+.sb-footer button{height:36px;padding:0 14px;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;flex:1}
+.sb-btn-gen{background:var(--blue);color:#fff}
+.sb-btn-gen:hover{filter:brightness(1.1)}
+.sb-btn-save{background:var(--surface2);color:var(--text);border:1px solid var(--divider)!important}
+.sb-btn-save:hover{background:var(--divider)}
+.sb-btn-validate{background:var(--indigo);color:#fff}
+.sb-btn-validate:hover{filter:brightness(1.1)}
+
+/* ─── CANVAS ─── */
+.canvas-header{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--divider);background:var(--surface);position:relative;z-index:5}
+.ch-title{font-weight:600;font-size:16px;flex:1}
+.ch-zoom{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--text3)}
+.ch-zoom button{width:28px;height:28px;border-radius:6px;border:1px solid var(--divider);background:var(--surface);color:var(--text2);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.ch-zoom button:hover{background:var(--surface2)}
+.ch-zoom span{min-width:36px;text-align:center;font-size:12px;color:var(--text2)}
+
+.canvas-viewport{position:relative;width:100%;height:calc(100% - 57px);overflow:hidden}
+.canvas-scroll{position:absolute;top:0;left:0;width:100%;height:100%;overflow:auto}
+.canvas-inner{position:relative;min-width:1200px;min-height:2000px;padding:40px 60px;transform-origin:0 0;transition:transform .2s ease-out}
+
+/* ─── 鱼骨图节点 ─── */
+.fishbone{position:relative;padding-left:50px}
+.fishbone::before{content:'';position:absolute;left:24px;top:20px;bottom:20px;width:2px;background:linear-gradient(180deg,var(--blue),var(--indigo));opacity:.25;border-radius:1px}
+
+.fb-node{position:relative;margin-bottom:8px;padding:14px 18px;background:var(--surface);border-radius:var(--radius);border:1px solid var(--divider);box-shadow:var(--shadow);cursor:pointer;transition:all .2s;animation:slideUp .35s ease-out both}
+.fb-node::before{content:'';position:absolute;left:-26px;top:50%;width:24px;height:2px;background:var(--blue);opacity:.3}
+.fb-node::after{content:'';position:absolute;left:-30px;top:calc(50% - 5px);width:10px;height:10px;border-radius:50%;background:var(--blue);opacity:.6;transition:all .2s}
+.fb-node:hover{transform:translateX(6px);box-shadow:var(--shadow-lg);border-color:rgba(0,122,255,.2)}
+.fb-node:hover::after{opacity:1;transform:scale(1.3);background:var(--blue)}
+.fb-node:active{cursor:grabbing;opacity:.8}
+.fb-node.selected{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-light)}
+.fb-node.selected::after{background:var(--blue);opacity:1;box-shadow:0 0 0 3px var(--blue-light)}
+.fb-node.dragging{opacity:.4;border-style:dashed}
+
+.fb-node .fb-top{display:flex;align-items:center;gap:8px}
+.fb-node .fb-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.fb-node .fb-title{font-weight:600;font-size:15px;flex:1}
+.fb-node .fb-badge{font-size:10px;padding:1px 8px;border-radius:8px;background:var(--blue-light);color:var(--blue);font-weight:500}
+.fb-node .fb-desc{font-size:12px;color:var(--text2);margin-top:4px;line-height:1.4}
+.fb-node .fb-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.fb-node .fb-tag{font-size:10px;padding:2px 8px;border-radius:6px;background:var(--surface2);color:var(--text2)}
+.fb-node .fb-order{position:absolute;top:-6px;right:-6px;width:22px;height:22px;border-radius:50%;background:var(--surface);border:1px solid var(--divider);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--text3);box-shadow:var(--shadow)}
+.fb-node .fb-expand-btn{font-size:10px;color:var(--blue);cursor:pointer;padding:2px 6px;border-radius:4px;transition:background .15s}
+.fb-node .fb-expand-btn:hover{background:var(--blue-light)}
+
+.fb-empty{padding:60px 20px;text-align:center;color:var(--text3);font-size:14px;line-height:2}
+
+/* ─── 子剧情画布（三级嵌套） ─── */
+.nest-level{display:none;margin-top:6px;margin-left:24px;padding:10px 0 6px 16px;border-left:2px solid var(--divider);position:relative}
+.nest-level.show{display:block;animation:fadeIn .25s ease-out}
+.nest-level.l2{border-left-color:rgba(0,122,255,.2);margin-left:16px}
+.nest-level.l3{border-left-color:rgba(88,86,214,.2);margin-left:12px}
+.nest-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;padding:4px 8px;font-size:12px;color:var(--text2)}
+.nest-header button{padding:3px 10px;border:1px solid var(--divider);background:var(--surface);border-radius:6px;font-size:11px;cursor:pointer;color:var(--blue);transition:all .12s}
+.nest-header button:hover{background:var(--blue-light);border-color:var(--blue)}
+.nest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:4px}
+.nest-card{background:var(--surface);border:1px solid var(--divider);border-radius:var(--radius-sm);padding:8px 10px;cursor:pointer;transition:all .12s;position:relative;animation:fadeIn .2s ease-out}
+.nest-card:hover{border-color:var(--blue);box-shadow:var(--shadow);transform:translateY(-1px)}
+.nest-card .nc-icon{font-size:16px}
+.nest-card .nc-label{font-size:12px;font-weight:500;margin-top:2px;display:block}
+.nest-card .nc-desc{font-size:10px;color:var(--text2);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nest-card .nc-del{position:absolute;top:-4px;right:-4px;width:16px;height:16px;border-radius:50%;background:var(--red);color:#fff;font-size:8px;border:none;cursor:pointer;display:none;align-items:center;justify-content:center}
+.nest-card:hover .nc-del{display:flex}
+
+/* ─── 属性面板 ─── */
+#propPanel{position:fixed;right:-380px;top:0;width:360px;height:100vh;background:var(--surface);z-index:50;box-shadow:-4px 0 24px rgba(0,0,0,.08);transition:right .3s cubic-bezier(.25,.46,.45,.94);display:flex;flex-direction:column}
+#propPanel.open{right:0}
+#propOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:49}
+#propOverlay.show{display:block}
+.pp-header{display:flex;align-items:center;gap:8px;padding:16px 20px;border-bottom:1px solid var(--divider);font-weight:600;font-size:16px}
+.pp-close{margin-left:auto;cursor:pointer;width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:background .12s}
+.pp-close:hover{background:var(--surface2)}
+.pp-body{flex:1;overflow-y:auto;padding:16px 20px}
+.pp-body::-webkit-scrollbar{width:4px}
+.pp-body::-webkit-scrollbar-thumb{background:var(--divider);border-radius:4px}
+.pp-empty{display:flex;flex:1;align-items:center;justify-content:center;padding:40px 20px;color:var(--text3);font-size:14px;text-align:center;line-height:1.8}
+
+.pp-group{margin-bottom:18px}
+.pp-group label{display:block;font-size:11px;font-weight:600;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.pp-group input,.pp-group textarea{width:100%;padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--divider);background:var(--surface2);color:var(--text);font-size:14px;transition:all .15s}
+.pp-group input:focus,.pp-group textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-light)}
+.pp-group textarea{resize:vertical;min-height:64px}
+.pp-pills{display:flex;flex-wrap:wrap;gap:4px}
+.pp-pill{padding:5px 12px;border-radius:16px;border:1px solid var(--divider);background:var(--surface);font-size:12px;cursor:pointer;transition:all .12s;color:var(--text2)}
+.pp-pill:hover{border-color:var(--blue);color:var(--blue)}
+.pp-pill.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.pp-delete{margin-top:20px;padding:10px;border:1px solid var(--red);border-radius:var(--radius-sm);background:transparent;color:var(--red);font-size:13px;cursor:pointer;transition:all .12s;width:100%;text-align:center}
+.pp-delete:hover{background:var(--red);color:#fff}
+
+/* ─── VALIDATION ─── */
+.vp-panel{position:fixed;right:16px;bottom:60px;width:320px;max-height:300px;background:var(--surface);border:1px solid var(--divider);border-radius:var(--radius);box-shadow:var(--shadow-lg);z-index:40;overflow:hidden;display:none}
+.vp-panel.show{display:block;animation:fadeIn .2s ease-out}
+.vp-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--divider);font-size:13px;font-weight:600}
+.vp-head .vp-close{cursor:pointer;color:var(--text3);font-size:16px;line-height:1}
+.vp-body{padding:8px 16px;max-height:240px;overflow-y:auto;font-size:12px}
+.vp-body .vp-item{padding:6px 0;display:flex;gap:8px;border-bottom:1px solid var(--divider)}
+.vp-body .vp-item:last-child{border:none}
+.vp-dot{width:7px;height:7px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.vp-dot.err{background:var(--red)}.vp-dot.warn{background:var(--orange)}.vp-dot.ok{background:var(--green)}
+.vp-empty{text-align:center;color:var(--text3);padding:16px;font-size:12px}
+
+/* ─── GEN MODAL ─── */
+.gen-overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.3);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center}
+.gen-overlay.show{display:flex}
+.gen-modal{width:580px;max-width:90vw;max-height:80vh;background:var(--surface);border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden;display:flex;flex-direction:column;animation:slideUp .3s ease-out}
+.gen-head{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--divider);font-weight:600;font-size:16px}
+.gen-head .gm-close{cursor:pointer;color:var(--text3);font-size:18px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;transition:background .12s}
+.gen-head .gm-close:hover{background:var(--surface2)}
+.gen-body{padding:16px 20px;overflow-y:auto;flex:1;font-size:15px;line-height:1.9;white-space:pre-wrap;color:var(--text)}
+.gen-body.loading{display:flex;align-items:center;justify-content:center;min-height:100px;color:var(--text3);font-size:14px}
+.gen-spinner{width:24px;height:24px;border:2.5px solid var(--divider);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin-right:10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gen-foot{padding:12px 20px;border-top:1px solid var(--divider);display:flex;gap:8px;justify-content:flex-end}
+.gen-foot button{height:36px;padding:0 16px;border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;transition:all .12s}
+.gm-copy{background:var(--indigo);color:#fff}
+.gm-copy:hover{filter:brightness(1.1)}
+.gm-close-btn{background:var(--surface2);color:var(--text2)}
+.gm-close-btn:hover{background:var(--divider)}
+
+/* ─── DRAG GHOST ─── */
+.drag-ghost{position:fixed;pointer-events:none;z-index:200;opacity:.85;padding:8px 14px;background:var(--surface);border:1px solid var(--blue);border-radius:var(--radius-sm);box-shadow:var(--shadow-lg);font-size:13px;transform:scale(.95)}
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- SIDEBAR -->
+  <div id="sidebar">
+    <div class="sb-header">
+      <svg viewBox="0 0 24 24"><path d="M4 20h16M4 12h16M4 4h16" stroke-linecap="round"/></svg>
+      <span>故事鱼骨</span>
+    </div>
+    <div class="sb-search"><input id="tplSearch" placeholder="搜索预制模块…" oninput="renderGroups()"></div>
+    <div class="sb-groups" id="sbGroups"></div>
+    <div class="sb-footer">
+      <button class="sb-btn-validate" onclick="validateStory()" title="逻辑检查">✓</button>
+      <button class="sb-btn-gen" onclick="generateStory()">生成</button>
+      <button class="sb-btn-save" onclick="saveProject()">保存</button>
+    </div>
+  </div>
+
+  <!-- CANVAS -->
+  <div id="canvas-wrap">
+    <div class="canvas-header">
+      <span class="ch-title">故事主线</span>
+      <div class="ch-zoom">
+        <button onclick="zoomOut()">−</button>
+        <span id="zoomLabel">100%</span>
+        <button onclick="zoomIn()">+</button>
+        <button onclick="zoomReset()" style="margin-left:4px;font-size:10px">⊡</button>
+      </div>
+    </div>
+    <div class="canvas-viewport" id="canvasViewport">
+      <div class="canvas-scroll" id="canvasScroll">
+        <div class="canvas-inner" id="canvasInner">
+          <div id="fishboneContainer"><div class="fb-empty">从左侧拖拽模板到此处 · 搭建你的故事</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROPERTIES -->
+  <div id="propOverlay" onclick="closeProp()"></div>
+  <div id="propPanel">
+    <div class="pp-header">
+      <span id="ppIcon">📌</span><span id="ppTitle">属性</span>
+      <div class="pp-close" onclick="closeProp()">✕</div>
+    </div>
+    <div class="pp-body" id="ppBody"><div class="pp-empty">选择节点编辑属性</div></div>
+  </div>
+
+  <!-- GEN MODAL -->
+  <div class="gen-overlay" id="genOverlay" onclick="if(event.target===this)closeGen()">
+    <div class="gen-modal" onclick="event.stopPropagation()">
+      <div class="gen-head"><span id="genTitle">故事生成</span><span class="gm-close" onclick="closeGen()">✕</span></div>
+      <div class="gen-body" id="genBody"><div class="gen-spinner"></div>正在构建...</div>
+      <div class="gen-foot">
+        <button class="gm-copy" onclick="copyGen()">复制</button>
+        <button class="gm-close-btn" onclick="closeGen()">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VALIDATION -->
+  <div class="vp-panel" id="vpPanel">
+    <div class="vp-head"><span>逻辑检查</span><span class="vp-close" onclick="this.parentElement.parentElement.classList.remove('show')">✕</span></div>
+    <div class="vp-body" id="vpBody"><div class="vp-empty">点击 ✓ 运行检查</div></div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

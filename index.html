@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Sorkin Ren · Vibe Coding Portfolio</title>
+<style>
+:root {
+  --bg: #f2f2f7;
+  --card: #ffffff;
+  --text: #1c1c1e;
+  --text2: #6c6c70;
+  --text3: #aeaeb2;
+  --blue: #007aff;
+  --indigo: #5856d6;
+  --green: #34c759;
+  --orange: #ff9f0a;
+  --radius: 20px;
+  --radius-sm: 14px;
+  --shadow: 0 1px 3px rgba(0,0,0,.04), 0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,.1);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 80px;
+}
+
+/* Header */
+.header {
+  padding: 60px 20px 30px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+.header-avatar {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  align-items: center; justify-content: center;
+  font-size: 32px; color: #fff; font-weight: 600;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 20px rgba(102,126,234,.3);
+}
+.header h1 {
+  font-size: 28px; font-weight: 700;
+  margin-bottom: 6px;
+}
+.header p {
+  font-size: 15px; color: var(--text2);
+  max-width: 480px;
+}
+.header-links {
+  display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;
+}
+.header-links a {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 14px; color: var(--blue);
+  text-decoration: none; padding: 6px 14px;
+  background: rgba(0,122,255,.08);
+  border-radius: 20px; transition: .2s;
+}
+.header-links a:hover { background: rgba(0,122,255,.15); }
+
+/* Section */
+.section {
+  max-width: 680px; margin: 0 auto; padding: 0 20px;
+}
+.section-title {
+  font-size: 13px; font-weight: 600; color: var(--text3);
+  text-transform: uppercase; letter-spacing: .5px;
+  margin: 32px 0 12px; padding: 0 4px;
+}
+
+/* Project Cards */
+.project-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 14px;
+  transition: transform .15s, box-shadow .2s;
+  cursor: pointer;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+.project-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+.project-card-header {
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 10px;
+}
+.project-icon {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.project-name {
+  font-size: 17px; font-weight: 600;
+}
+.project-sub {
+  font-size: 13px; color: var(--text2);
+}
+.project-desc {
+  font-size: 14px; color: var(--text2);
+  line-height: 1.5;
+  margin-left: 62px;
+}
+.project-tags {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin: 10px 0 0 62px;
+}
+.project-tags span {
+  font-size: 12px; padding: 2px 10px;
+  border-radius: 12px;
+  background: var(--bg); color: var(--text2);
+}
+
+/* Sub-section for "upcoming" */
+.coming-soon {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text3);
+  font-size: 14px;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text3);
+  font-size: 13px;
+  max-width: 680px; margin: 0 auto;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.project-card:nth-child(1) { animation: fadeUp .4s .05s both; }
+.project-card:nth-child(2) { animation: fadeUp .4s .15s both; }
+.project-card:nth-child(3) { animation: fadeUp .4s .25s both; }
+
+/* Icons */
+.icon-github { width: 16px; height: 16px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-avatar">S</div>
+  <h1>Sorkin Ren</h1>
+  <p>一个做工具的人。Vibe coder，喜欢用代码解决自己的真实需求。做的东西不多，但每一个都在用。</p>
+  <div class="header-links">
+    <a href="https://github.com/sorkinren-sketch" target="_blank">
+      <svg class="icon-github" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+    <a href="mailto:sorkin.ren@gmail.com">📧 Email</a>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">项目</div>
+
+  <a class="project-card" href="projects/daily-english-x10/">
+    <div class="project-card-header">
+      <div class="project-icon" style="background:linear-gradient(135deg,#007aff,#00b4ff);">📖</div>
+      <div>
+        <div class="project-name">Daily English x10</div>
+        <div class="project-sub">英语口语学习 · 职场场景</div>
+      </div>
+    </div>
+    <div class="project-desc">
+      从真实英语教学视频中提取句子和原声音频，每天15句循序渐进。iOS原生风格，支持听原声、语音输入评分、学习记录追踪。171句职场英语 + 171个原声片段，全部内嵌在单文件中。
+    </div>
+    <div class="project-tags">
+      <span>单文件 App</span>
+      <span>原声发音</span>
+      <span>语音评分</span>
+      <span>微信即用</span>
+    </div>
+  </a>
+
+  <a class="project-card" href="projects/story-fishbone/">
+    <div class="project-card-header">
+      <div class="project-icon" style="background:linear-gradient(135deg,#5856d6,#af52de);">🎣</div>
+      <div>
+        <div class="project-name">故事鱼骨 · 叙事引擎</div>
+        <div class="project-sub">可视化故事逻辑编辑器</div>
+      </div>
+    </div>
+    <div class="project-desc">
+      受 Unreal Engine 蓝图启发的故事逻辑构建工具。鱼骨图时间线 + 子剧情嵌套 + 50+ 预制模板（场景/角色/事件/对话/抉择/心境/转场）。拖拽即用，本地持久化，接入 DeepSeek 辅助写作。帮你理清角色动机、因果链、性格一致性，而不是帮你"写文笔"。
+    </div>
+    <div class="project-tags">
+      <span>可视化编辑</span>
+      <span>拖拽排序</span>
+      <span>逻辑校验</span>
+      <span>AI 辅助</span>
+    </div>
+  </a>
+
+  <div class="section-title" style="margin-top:32px;">更多 Vibe Coding</div>
+
+  <a class="project-card" href="#" onclick="return false;" style="opacity:.6;">
+    <div class="project-card-header">
+      <div class="project-icon" style="background:linear-gradient(135deg,#ff9500,#ffcc02);">🔨</div>
+      <div>
+        <div class="project-name">更多工具正在路上</div>
+        <div class="project-sub">Vibe coding — 用代码解决自己的需求</div>
+      </div>
+    </div>
+    <div class="project-desc">
+      小红书内容自动化工具、英语学习自动化流水线……做了很多满足自己需求的小程序，随缘更新。
+    </div>
+    <div class="project-tags">
+      <span>Coming Soon</span>
+    </div>
+  </a>
+</div>
+
+<div class="footer">
+  Built with vibe coding · &copy; 2025 Sorkin Ren
+</div>
+
+</body>
+</html>
