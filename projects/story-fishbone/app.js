@@ -469,7 +469,7 @@ ${timeline}
   try{
     const resp = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer sk-b099309822cf44dfaa1ef01ccc153dd5'},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+(localStorage.getItem('dsKey')||'')},
       body: JSON.stringify({
         model:'deepseek-chat',
         messages:[{role:'system',content:'你是一位专业小说家，擅长根据鱼骨图叙事蓝图生成小说段落。'},
