@@ -989,6 +989,13 @@ document.addEventListener('keydown', e => {
 });
 
 if ('speechSynthesis' in window) speechSynth.getVoices();
+
+// 注册 Service Worker（强制更新版本缓存）
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
 </script>
 </body>
 </html>
