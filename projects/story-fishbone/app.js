@@ -29,6 +29,18 @@ document.addEventListener('DOMContentLoaded',()=>{
   renderMainline();
   setupDrop();
   setupDragSort();
+  // 鱼骨图节点单击选中（用事件委托，解决双击冲突）
+  document.getElementById('fishboneContainer').addEventListener('click', e => {
+    const fb = e.target.closest('.fb-node');
+    if(!fb) return;
+    // 如果是双击，在 300ms 内再次点击同一个节点，不触发
+    const id = parseInt(fb.dataset.id);
+    if(fb._clickTimer){ clearTimeout(fb._clickTimer); fb._clickTimer=null; return; }
+    fb._clickTimer = setTimeout(()=>{
+      fb._clickTimer=null;
+      selectNode('main',null,id);
+    }, 250);
+  });
 });
 
 // ═══════════════════════════════════════════════
@@ -117,7 +129,6 @@ function renderNode(n,i){
   const hasCh = n.children&&n.children.length>0;
   const hasBp = n.blueprints && (n.blueprints.nodes||[]).length>0;
   return `<div class="fb-node${selClass}" data-id="${n.id}" data-index="${i}"
-       onclick="selectNode('main',null,${n.id})"
        ondblclick="openBlueprint(${n.id})">
     <div class="fb-order">${i+1}</div>
     <div class="fb-top">
@@ -558,6 +569,8 @@ const BP_TPL = [
 
 // ─── 打开蓝图面板 ───
 function openBlueprint(nodeId){
+  // 双击打开蓝图时先关掉属性面板，避免遮挡
+  if(propOpen) closeProp();
   const node = mainline.find(n=>n.id===nodeId);
   if(!node) return;
   bpActiveNode = node;
