@@ -466,7 +466,7 @@ ${timeline}
       signal: controller.signal,
       headers:{'Content-Type':'application/json','Authorization':'Bearer sk-b099309822cf44dfaa1ef01ccc153dd5'},
       body:JSON.stringify({
-        model:'deepseek-chat',
+        model:'deepseek-v4-flash',
         messages:[{role:'system',content:'你是一位专业小说家，擅长根据故事蓝图创作长篇叙事。文笔流畅，画面感强，注重角色和因果。'},
                   {role:'user',content:prompt}],
         temperature:.85, max_tokens:2000
