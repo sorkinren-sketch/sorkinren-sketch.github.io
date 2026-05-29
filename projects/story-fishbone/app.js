@@ -436,8 +436,24 @@ function validateStory(){
 // ═══════════════════════════════════════════════
 //  生成故事（长文版）
 // ═══════════════════════════════════════════════
+function getApiKey(){
+  let key = localStorage.getItem('storyfishbone_apikey');
+  if(!key){
+    key = prompt('请输入你的 DeepSeek API Key\n（可在 platform.deepseek.com/api_keys 获取）\n不输入则使用离线模式');
+    if(key && key.trim()){
+      key = key.trim();
+      localStorage.setItem('storyfishbone_apikey', key);
+    } else {
+      return null;
+    }
+  }
+  return key;
+}
+
 async function generateStory(){
   if(!mainline.length){alert('请先搭建故事');return;}
+  const apiKey = getApiKey();
+  if(!apiKey){ alert('请先设置 API Key'); return; }
   const ov=$('genOverlay'), bd=$('genBody');
   $('genTitle').textContent='故事生成';
   ov.classList.add('show');
@@ -464,7 +480,7 @@ ${timeline}
     const resp=await fetch('https://api.deepseek.com/v1/chat/completions',{
       method:'POST',
       signal: controller.signal,
-      headers:{'Content-Type':'application/json','Authorization':'Bearer sk-b099309822cf44dfaa1ef01ccc153dd5'},
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
       body:JSON.stringify({
         model:'deepseek-v4-flash',
         messages:[{role:'system',content:'你是一位专业小说家，擅长根据故事蓝图创作长篇叙事。文笔流畅，画面感强，注重角色和因果。'},
