@@ -9,196 +9,281 @@
   html{font-size:16px;-webkit-text-size-adjust:100%}
   body{
     font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue',sans-serif;
-    background:#0b0d17;
-    color:#d6d8e4;
-    min-height:100vh;
-    overflow-x:hidden;
-    line-height:1.6;
+    background:#0b0d17;color:#d6d8e4;min-height:100vh;overflow-x:hidden;line-height:1.6;
   }
-  a{color:inherit;text-decoration:none}
-
   :root{
-    --bg:#0b0d17;
-    --bg-card:#12142a;
-    --bg-card2:#171a32;
-    --accent-blue:#7986cb;
-    --accent-pink:#e0a2c4;
-    --accent-purple:#9c8fd0;
-    --accent-glow:rgba(121,134,203,.15);
-    --text:#d6d8e4;
-    --text-dim:#7a7d9a;
-    --text-bright:#f0f1fa;
-    --gold:#d4a853;
-    --radius:16px;
+    --bg:#0b0d17;--bg-card:#12142a;--bg-card2:#171a32;
+    --accent-blue:#7986cb;--accent-pink:#e0a2c4;--accent-purple:#9c8fd0;
+    --accent-green:#7bcba3;--accent-gold:#d4a853;
+    --text:#d6d8e4;--text-dim:#7a7d9a;--text-bright:#f0f1fa;
+    --radius:16px;--radius-sm:10px;
     --shadow:0 8px 32px rgba(0,0,0,.4);
   }
-
   ::-webkit-scrollbar{width:4px}
   ::-webkit-scrollbar-track{background:var(--bg)}
   ::-webkit-scrollbar-thumb{background:var(--accent-blue);border-radius:2px}
 
-  .header{
-    text-align:center;
-    padding:48px 20px 32px;
-    position:relative;
-    overflow:hidden;
-  }
+  /* ====== Header ====== */
+  .header{text-align:center;padding:48px 20px 24px;position:relative;overflow:hidden}
   .header::before{
-    content:'';
-    position:absolute;top:-60%;left:-50%;width:200%;height:200%;
+    content:'';position:absolute;top:-60%;left:-50%;width:200%;height:200%;
     background:radial-gradient(ellipse at 50% 0%,rgba(121,134,203,.08),transparent 70%);
     pointer-events:none;
   }
-  .logo-icon{font-size:40px;display:block;margin-bottom:8px}
-  .header h1{
-    font-size:22px;font-weight:600;color:var(--text-bright);
-    letter-spacing:2px;margin-bottom:6px;
-  }
-  .header p{
-    font-size:13px;color:var(--text-dim);
-    max-width:280px;margin:0 auto;line-height:1.5;
-  }
+  .logo-icon{font-size:40px;display:block;margin-bottom:6px}
+  .header h1{font-size:22px;font-weight:600;color:var(--text-bright);letter-spacing:2px;margin-bottom:4px}
+  .header p{font-size:13px;color:var(--text-dim);max-width:280px;margin:0 auto;line-height:1.5}
 
-  .progress-card{
-    margin:0 16px 16px;padding:28px 20px 20px;
-    background:linear-gradient(145deg,var(--bg-card),var(--bg-card2));
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    position:relative;
-    overflow:hidden;
+  /* ====== Nav Tabs ====== */
+  .nav-tabs{
+    display:flex;gap:4px;margin:0 16px 16px;padding:4px;
+    background:var(--bg-card);border-radius:12px;
   }
-  .progress-card::after{
-    content:'';
-    position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,var(--accent-blue),var(--accent-pink),var(--accent-purple));
+  .nav-tab{
+    flex:1;padding:10px 6px;text-align:center;font-size:12px;font-weight:500;
+    border-radius:8px;cursor:pointer;transition:all .25s;color:var(--text-dim);
+    border:none;background:none;
   }
-  .progress-label{
-    display:flex;justify-content:space-between;align-items:baseline;
-    margin-bottom:12px;
-  }
-  .progress-label span:first-child{font-size:13px;color:var(--text-dim)}
-  .progress-label strong{font-size:20px;color:var(--text-bright);font-weight:600}
-  .progress-label small{font-size:12px;color:var(--text-dim)}
-  .progress-bar{
-    height:8px;border-radius:4px;background:rgba(255,255,255,.06);
-    margin-bottom:16px;overflow:hidden;
-  }
-  .progress-bar-fill{
-    height:100%;border-radius:4px;width:0%;
-    background:linear-gradient(90deg,var(--accent-blue),var(--accent-pink));
-    transition:width 1s ease;
-  }
-  .stats-row{
-    display:flex;justify-content:space-around;text-align:center;
-    padding-top:16px;border-top:1px solid rgba(255,255,255,.05);
-  }
-  .stats-item{flex:1}
-  .stats-item .num{font-size:18px;font-weight:600;color:var(--text-bright)}
-  .stats-item .label{font-size:11px;color:var(--text-dim);margin-top:2px}
+  .nav-tab.active{background:linear-gradient(135deg,rgba(121,134,203,.25),rgba(156,143,208,.15));color:var(--text-bright)}
+  .nav-tab:active{transform:scale(.96)}
 
-  .cta-wrap{padding:0 16px 20px;text-align:center}
-  .cta-btn{
-    display:block;width:100%;max-width:320px;margin:0 auto;
-    padding:16px 24px;
-    background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));
-    color:#fff;font-size:17px;font-weight:600;
-    border:none;border-radius:12px;
-    cursor:pointer;
-    box-shadow:0 4px 20px rgba(121,134,203,.3);
-    transition:transform .2s,box-shadow .2s;
-    letter-spacing:1px;
-  }
-  .cta-btn:active{transform:scale(.97);box-shadow:0 2px 10px rgba(121,134,203,.2)}
+  /* ====== Page Panels ====== */
+  .panel{display:none;animation:fadeIn .35s ease}
+  .panel.active{display:block}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
   .section{padding:0 16px 24px}
-  .section-title{
-    font-size:14px;font-weight:600;color:var(--text-dim);
-    margin-bottom:12px;letter-spacing:1px;text-transform:uppercase;
-  }
+  .section-title{font-size:14px;font-weight:600;color:var(--text-dim);margin-bottom:12px;letter-spacing:1px;text-transform:uppercase}
 
-  .feed-list{list-style:none;display:flex;flex-direction:column;gap:8px}
-  .feed-item{
-    background:var(--bg-card);border-radius:10px;
-    padding:12px 14px;
-    display:flex;align-items:center;gap:12px;
-    animation:fadeIn .3s ease;
-  }
-  .feed-item .avatar{
-    width:32px;height:32px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    font-size:14px;font-weight:600;flex-shrink:0;
-  }
-  .feed-item .info{flex:1;min-width:0}
-  .feed-item .name{font-size:13px;color:var(--text-bright);font-weight:500}
-  .feed-item .meta{font-size:11px;color:var(--text-dim)}
-  .feed-item .amount{
-    font-size:13px;font-weight:600;
-    padding:3px 8px;border-radius:6px;
-    flex-shrink:0;
-  }
-  .amount-1{background:rgba(121,134,203,.15);color:var(--accent-blue)}
-  .amount-14{background:rgba(224,162,196,.15);color:var(--accent-pink)}
-  .amount-141{background:rgba(156,143,208,.15);color:var(--accent-purple)}
-
-  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-
-  .cert-preview{
+  /* ====== Progress Card ====== */
+  .progress-card{
+    margin:0 16px 16px;padding:24px 20px 18px;
     background:linear-gradient(145deg,var(--bg-card),var(--bg-card2));
-    border-radius:var(--radius);
-    padding:24px 20px;
-    text-align:center;
-    box-shadow:var(--shadow);
-    margin-bottom:16px;
-    position:relative;
-    overflow:hidden;
+    border-radius:var(--radius);box-shadow:var(--shadow);position:relative;overflow:hidden;
   }
-  .cert-preview::before{
-    content:'';
-    position:absolute;top:0;left:0;right:0;bottom:0;
-    background:radial-gradient(circle at 50% 30%,rgba(212,168,83,.04),transparent 60%);
-    pointer-events:none;
+  .progress-card::after{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,var(--accent-blue),var(--accent-pink),var(--accent-purple));
   }
-  .cert-badge{font-size:52px;display:block;margin-bottom:4px}
-  .cert-title{
-    font-size:16px;font-weight:600;color:var(--gold);
-    letter-spacing:3px;margin-bottom:4px;
-  }
-  .cert-number{
-    font-size:40px;font-weight:700;color:var(--text-bright);
-    letter-spacing:2px;
-  }
-  .cert-meta{font-size:12px;color:var(--text-dim);line-height:1.5}
-  .cert-meta span{display:block}
+  .progress-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .progress-label span:first-child{font-size:12px;color:var(--text-dim)}
+  .progress-label strong{font-size:20px;color:var(--text-bright);font-weight:600}
+  .progress-label small{font-size:11px;color:var(--text-dim);font-weight:400}
+  .progress-bar{height:6px;border-radius:3px;background:rgba(255,255,255,.06);margin-bottom:12px;overflow:hidden}
+  .progress-bar-fill{height:100%;width:0%;border-radius:3px;background:linear-gradient(90deg,var(--accent-blue),var(--accent-pink));transition:width 1s ease}
+  .stats-row{display:flex;justify-content:space-around;text-align:center;padding-top:12px;border-top:1px solid rgba(255,255,255,.05)}
+  .stats-item{flex:1}
+  .stats-item .num{font-size:18px;font-weight:600;color:var(--text-bright)}
+  .stats-item .label{font-size:10px;color:var(--text-dim);margin-top:2px}
 
-  .diary-list{display:flex;flex-direction:column;gap:10px}
-  .diary-item{
-    background:var(--bg-card);border-radius:10px;
-    padding:14px;position:relative;
-    border-left:3px solid var(--accent-blue);
+  /* ====== CTA ====== */
+  .cta-wrap{padding:0 16px 16px;text-align:center}
+  .cta-btn{
+    display:block;width:100%;max-width:320px;margin:0 auto;
+    padding:14px 24px;
+    background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));
+    color:#fff;font-size:16px;font-weight:600;
+    border:none;border-radius:12px;cursor:pointer;
+    box-shadow:0 4px 20px rgba(121,134,203,.3);
+    transition:transform .2s,box-shadow .2s;letter-spacing:1px;
   }
-  .diary-item .day{font-size:11px;color:var(--accent-blue);font-weight:600;letter-spacing:1px}
-  .diary-item .text{font-size:13px;color:var(--text);margin-top:4px;line-height:1.5}
-  .diary-item .text .highlight{color:var(--accent-pink)}
+  .cta-btn:active{transform:scale(.97);box-shadow:0 2px 10px rgba(121,134,203,.2)}
+  .cta-btn.small{padding:10px 16px;font-size:14px;max-width:200px}
 
-  .tier-grid{display:flex;flex-direction:column;gap:8px}
+  /* ====== Tier List ====== */
+  .tier-grid{display:flex;flex-direction:column;gap:6px}
   .tier-item{
-    background:var(--bg-card);border-radius:12px;
-    padding:14px 16px;
-    display:flex;align-items:center;justify-content:space-between;
-    cursor:pointer;transition:background .2s;
-    border:1px solid transparent;
+    background:var(--bg-card);border-radius:var(--radius-sm);
+    padding:12px 14px;display:flex;align-items:center;justify-content:space-between;
+    cursor:pointer;transition:background .2s;border:1px solid transparent;
   }
   .tier-item:active{background:var(--bg-card2)}
   .tier-item .left{display:flex;align-items:center;gap:10px;flex:1}
-  .tier-item .badge{font-size:20px}
-  .tier-item .desc{font-size:13px}
-  .tier-item .desc .tag{font-size:11px;color:var(--text-dim);display:block}
-  .tier-item .price{font-size:15px;font-weight:600;flex-shrink:0}
+  .tier-item .badge{font-size:18px}
+  .tier-item .desc{font-size:12px}
+  .tier-item .desc .tag{font-size:10px;color:var(--text-dim);display:block}
+  .tier-item .price{font-size:14px;font-weight:600;flex-shrink:0}
   .tier-1{border-color:rgba(121,134,203,.2)}.tier-1 .price{color:var(--accent-blue)}
   .tier-2{border-color:rgba(224,162,196,.2)}.tier-2 .price{color:var(--accent-pink)}
   .tier-3{border-color:rgba(156,143,208,.2)}.tier-3 .price{color:var(--accent-purple)}
-  .tier-4{border-color:rgba(212,168,83,.2)}.tier-4 .price{color:var(--gold)}
+  .tier-4{border-color:rgba(212,168,83,.2)}.tier-4 .price{color:var(--accent-gold)}
 
+  /* ====== Live Feed ====== */
+  .feed-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+  .feed-item{
+    background:var(--bg-card);border-radius:var(--radius-sm);
+    padding:10px 12px;display:flex;align-items:center;gap:10px;animation:fadeIn .3s ease;
+  }
+  .feed-item .avatar{
+    width:28px;height:28px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;flex-shrink:0;
+  }
+  .feed-item .info{flex:1;min-width:0}
+  .feed-item .name{font-size:12px;color:var(--text-bright);font-weight:500}
+  .feed-item .meta{font-size:10px;color:var(--text-dim)}
+  .feed-item .amount{font-size:12px;font-weight:600;padding:2px 6px;border-radius:4px;flex-shrink:0}
+  .amt-1{background:rgba(121,134,203,.15);color:var(--accent-blue)}
+  .amt-14{background:rgba(224,162,196,.15);color:var(--accent-pink)}
+  .amt-141{background:rgba(156,143,208,.15);color:var(--accent-purple)}
+
+  /* ====== Certificate ====== */
+  .cert-preview{
+    background:linear-gradient(145deg,var(--bg-card),var(--bg-card2));
+    border-radius:var(--radius);padding:20px;text-align:center;
+    box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .cert-preview::before{
+    content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+    background:radial-gradient(circle at 50% 30%,rgba(212,168,83,.04),transparent 60%);
+    pointer-events:none;
+  }
+  .cert-badge{font-size:44px;display:block;margin-bottom:2px}
+  .cert-title{font-size:15px;font-weight:600;color:var(--accent-gold);letter-spacing:3px;margin-bottom:2px}
+  .cert-number{font-size:36px;font-weight:700;color:var(--text-bright);letter-spacing:2px}
+  .cert-meta{font-size:11px;color:var(--text-dim);line-height:1.5}
+  .cert-meta span{display:block}
+
+  /* ====== 留言墙 ====== */
+  .msg-form{
+    background:var(--bg-card);border-radius:var(--radius);
+    padding:16px;margin-bottom:12px;
+  }
+  .msg-form textarea{
+    width:100%;padding:12px;border:none;border-radius:8px;
+    background:rgba(255,255,255,.05);color:var(--text-bright);
+    font-size:14px;resize:none;min-height:80px;font-family:inherit;
+    outline:1px solid rgba(255,255,255,.08);transition:outline .2s;
+  }
+  .msg-form textarea:focus{outline-color:var(--accent-blue)}
+  .msg-form .row{display:flex;gap:8px;margin-top:8px}
+  .msg-form input[type=text]{
+    flex:1;padding:10px 12px;border:none;border-radius:8px;
+    background:rgba(255,255,255,.05);color:var(--text-bright);
+    font-size:13px;outline:1px solid rgba(255,255,255,.08);
+  }
+  .msg-form input:focus{outline-color:var(--accent-blue)}
+  .msg-form .submit-btn{
+    padding:10px 20px;border:none;border-radius:8px;
+    background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));
+    color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;
+  }
+  .msg-form .submit-btn:active{transform:scale(.97)}
+  .msg-form .login-hint{font-size:12px;color:var(--text-dim);text-align:center;padding:12px}
+  .msg-form .login-hint span{color:var(--accent-blue);cursor:pointer;text-decoration:underline}
+
+  .msg-wall{display:flex;flex-direction:column;gap:8px}
+  .msg-card{
+    background:var(--bg-card);border-radius:var(--radius-sm);
+    padding:12px 14px;border-left:3px solid var(--accent-blue);
+    animation:fadeIn .3s ease;
+  }
+  .msg-card.featured{border-left-color:var(--accent-gold);background:linear-gradient(135deg,var(--bg-card),rgba(212,168,83,.04))}
+  .msg-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+  .msg-card .name{font-size:12px;font-weight:600;color:var(--text-bright)}
+  .msg-card .tag{
+    font-size:9px;padding:2px 6px;border-radius:4px;
+    background:rgba(212,168,83,.15);color:var(--accent-gold);
+  }
+  .msg-card .content{font-size:13px;color:var(--text);line-height:1.5;word-break:break-word}
+  .msg-card .time{font-size:10px;color:var(--text-dim);margin-top:6px}
+  .msg-card .reaction{
+    display:inline-block;font-size:11px;color:var(--text-dim);margin-top:4px;
+    cursor:pointer;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,.03);
+  }
+  .msg-card .reaction:active{background:rgba(255,255,255,.08)}
+
+  /* ====== 实验周报 ====== */
+  .report-card{
+    background:linear-gradient(145deg,var(--bg-card),var(--bg-card2));
+    border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);
+    position:relative;overflow:hidden;
+  }
+  .report-card::before{
+    content:'📬';position:absolute;top:-10px;right:-10px;font-size:60px;opacity:.06;
+  }
+  .report-date{font-size:11px;color:var(--accent-blue);font-weight:600;letter-spacing:1px}
+  .report-title{font-size:16px;font-weight:600;color:var(--text-bright);margin:4px 0 10px}
+  .report-body{font-size:13px;color:var(--text);line-height:1.7}
+  .report-body .hl{color:var(--accent-pink);font-weight:500}
+  .report-body .stat{display:inline-block;background:rgba(121,134,203,.1);color:var(--accent-blue);padding:1px 6px;border-radius:4px;font-weight:600}
+  .report-empty{text-align:center;padding:32px 16px;color:var(--text-dim);font-size:13px;line-height:1.6}
+  .report-empty strong{color:var(--text-bright);display:block;margin-bottom:4px}
+
+  /* ====== 实验者后台 ====== */
+  .admin-overlay{
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,.85);backdrop-filter:blur(8px);
+    display:none;z-index:999;flex-direction:column;padding:20px;
+  }
+  .admin-overlay.active{display:flex}
+  .admin-header{
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;
+  }
+  .admin-header h2{font-size:17px;font-weight:600;color:var(--text-bright)}
+  .admin-close{
+    width:32px;height:32px;border-radius:50%;border:none;
+    background:rgba(255,255,255,.08);color:var(--text-dim);
+    font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  }
+  .admin-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+  .admin-stat{
+    display:flex;gap:12px;margin-bottom:16px;
+  }
+  .admin-stat-box{
+    flex:1;background:var(--bg-card);border-radius:var(--radius-sm);
+    padding:14px;text-align:center;
+  }
+  .admin-stat-box .num{font-size:22px;font-weight:700;color:var(--text-bright)}
+  .admin-stat-box .label{font-size:10px;color:var(--text-dim);margin-top:2px}
+  .admin-msg{
+    background:var(--bg-card);border-radius:var(--radius-sm);
+    padding:12px 14px;margin-bottom:8px;
+  }
+  .admin-msg .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+  .admin-msg .name{font-size:12px;font-weight:600;color:var(--text-bright)}
+  .admin-msg .time{font-size:10px;color:var(--text-dim)}
+  .admin-msg .content{font-size:13px;color:var(--text);margin-bottom:6px}
+  .admin-msg .actions{display:flex;gap:6px}
+  .admin-msg .actions button{
+    font-size:10px;padding:4px 10px;border:none;border-radius:4px;
+    cursor:pointer;font-weight:500;
+  }
+  .btn-feature{background:rgba(212,168,83,.15);color:var(--accent-gold)}
+  .btn-unfeature{background:rgba(212,168,83,.08);color:var(--text-dim)}
+  .btn-export{background:rgba(121,134,203,.15);color:var(--accent-blue)}
+  .btn-delete{background:rgba(255,80,80,.1);color:#ff6666}
+
+  .admin-empty{text-align:center;padding:40px 0;color:var(--text-dim);font-size:13px}
+
+  /* ====== 后台入口（隐藏齿轮） ====== */
+  .admin-entry{
+    text-align:center;padding:4px 0;font-size:14px;color:transparent;
+    cursor:default;transition:color .5s;user-select:none;
+  }
+  .admin-entry:hover{color:rgba(255,255,255,.08)}
+
+  /* ====== 周报编辑（后台） ====== */
+  .report-edit textarea{
+    width:100%;padding:10px;border:none;border-radius:8px;
+    background:rgba(255,255,255,.05);color:var(--text-bright);
+    font-size:13px;resize:vertical;min-height:100px;font-family:inherit;
+    outline:1px solid rgba(255,255,255,.08);margin-bottom:8px;
+  }
+  .report-edit textarea:focus{outline-color:var(--accent-blue)}
+  .report-edit input[type=text]{
+    width:100%;padding:10px;border:none;border-radius:8px;
+    background:rgba(255,255,255,.05);color:var(--text-bright);
+    font-size:13px;outline:1px solid rgba(255,255,255,.08);margin-bottom:8px;
+  }
+  .report-edit input:focus{outline-color:var(--accent-blue)}
+  .save-btn{
+    padding:10px 20px;border:none;border-radius:8px;
+    background:linear-gradient(135deg,var(--accent-green),var(--accent-blue));
+    color:#fff;font-size:13px;font-weight:600;cursor:pointer;
+  }
+
+  /* ====== Modal ====== */
   .modal-overlay{
     position:fixed;top:0;left:0;right:0;bottom:0;
     background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
@@ -208,178 +293,212 @@
   .modal-overlay.active{display:flex}
   .modal{
     background:var(--bg-card2);border-radius:var(--radius);
-    padding:28px 20px 20px;max-width:340px;width:100%;
-    box-shadow:0 20px 60px rgba(0,0,0,.6);
-    text-align:center;
+    padding:24px 20px 20px;max-width:340px;width:100%;
+    box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:center;
     animation:modalIn .3s ease;
   }
   @keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
-  .modal h2{font-size:17px;color:var(--text-bright);margin-bottom:4px}
-  .modal .sub{font-size:12px;color:var(--text-dim);margin-bottom:16px}
+  .modal h2{font-size:16px;color:var(--text-bright);margin-bottom:4px}
+  .modal .sub{font-size:12px;color:var(--text-dim);margin-bottom:14px}
   .modal .qrcode-box{
-    width:200px;height:200px;margin:0 auto 16px;
+    width:180px;height:180px;margin:0 auto 14px;
     background:var(--bg-card);border-radius:12px;
     display:flex;align-items:center;justify-content:center;
-    font-size:12px;color:var(--text-dim);
+    font-size:11px;color:var(--text-dim);
     border:1px dashed rgba(255,255,255,.1);
-    position:relative;overflow:hidden;
   }
-  .modal .qrcode-box img{width:100%;height:100%;object-fit:contain}
   .modal .qrcode-box .placeholder{text-align:center;line-height:1.4}
-  .modal .qrcode-box .placeholder strong{color:var(--text-bright);font-size:14px;display:block;margin-bottom:4px}
-  .modal .paid-btn{
-    display:block;width:100%;
-    padding:14px;border:none;border-radius:10px;
-    background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));
-    color:#fff;font-size:15px;font-weight:600;
-    cursor:pointer;margin-top:8px;
-  }
-  .modal .paid-btn:active{transform:scale(.98)}
-  .modal .close-btn{
-    display:inline-block;margin-top:12px;
-    font-size:12px;color:var(--text-dim);cursor:pointer;
-    background:none;border:none;
-  }
+  .modal .qrcode-box .placeholder strong{color:var(--text-bright);font-size:13px;display:block;margin-bottom:4px}
   .modal .name-input{
-    width:100%;padding:12px 14px;border:none;border-radius:10px;
+    width:100%;padding:10px 12px;border:none;border-radius:8px;
     background:rgba(255,255,255,.06);color:var(--text-bright);
-    font-size:15px;text-align:center;margin-bottom:8px;
+    font-size:14px;text-align:center;margin-bottom:6px;
     outline:1px solid rgba(255,255,255,.1);
   }
   .modal .name-input:focus{outline-color:var(--accent-blue)}
-
-  .footer{
-    padding:24px 16px 40px;text-align:center;
-    font-size:11px;color:var(--text-dim);line-height:1.6;
+  .modal .paid-btn{
+    display:block;width:100%;padding:12px;border:none;border-radius:8px;
+    background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));
+    color:#fff;font-size:14px;font-weight:600;cursor:pointer;margin-top:6px;
   }
-  .footer a{color:var(--accent-blue);text-decoration:underline}
-  .footer strong{color:var(--text-dim)}
+  .modal .paid-btn:active{transform:scale(.98)}
+  .modal .close-btn{
+    display:inline-block;margin-top:10px;font-size:12px;color:var(--text-dim);
+    cursor:pointer;background:none;border:none;
+  }
 
+  /* ====== Toast ====== */
   .toast{
     position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
     background:var(--bg-card2);color:var(--text-bright);
-    padding:12px 20px;border-radius:10px;
-    font-size:13px;box-shadow:var(--shadow);
-    display:none;z-index:1000;
+    padding:10px 18px;border-radius:8px;font-size:12px;
+    box-shadow:var(--shadow);display:none;z-index:1000;
     border:1px solid rgba(255,255,255,.08);
   }
-  .toast.show{display:block;animation:fadeIn .3s ease}
+  .toast.show{display:block;animation:fadeIn .2s ease}
+
+  /* ====== Footer ====== */
+  .footer{padding:20px 16px 40px;text-align:center;font-size:10px;color:var(--text-dim);line-height:1.6}
+  .footer strong{color:var(--text-dim)}
 </style>
 </head>
 <body>
 
+<!-- ===== HEADER ===== -->
 <div class="header">
   <span class="logo-icon">💰</span>
   <h1>十四亿分之一</h1>
   <p>一个人真的去做了"每人给我一块钱"那件事</p>
 </div>
 
+<!-- ===== PROGRESS ===== -->
 <div class="progress-card">
   <div class="progress-label">
     <span>梦想进度</span>
     <div><strong id="totalRaised">1,187</strong> <small>/ ¥1,410,000,000</small></div>
   </div>
-  <div class="progress-bar">
-    <div class="progress-bar-fill" id="progressFill" style="width:0.000084%"></div>
-  </div>
+  <div class="progress-bar"><div class="progress-bar-fill" id="progressFill" style="width:0.000084%"></div></div>
   <div class="stats-row">
-    <div class="stats-item">
-      <div class="num" id="totalCount">1,187</div>
-      <div class="label">见证官</div>
-    </div>
-    <div class="stats-item">
-      <div class="num" id="todayCount">23</div>
-      <div class="label">今日加入</div>
-    </div>
-    <div class="stats-item">
-      <div class="num" id="daysRunning">3</div>
-      <div class="label">实验天数</div>
-    </div>
+    <div class="stats-item"><div class="num" id="totalCount">1,187</div><div class="label">见证官</div></div>
+    <div class="stats-item"><div class="num" id="todayCount">23</div><div class="label">今日加入</div></div>
+    <div class="stats-item"><div class="num" id="daysRunning">3</div><div class="label">实验天数</div></div>
   </div>
 </div>
 
+<!-- ===== CTA ===== -->
 <div class="cta-wrap">
   <button class="cta-btn" onclick="openModal(1)">¥1 成为梦想见证官</button>
 </div>
 
-<div class="section">
-  <div class="section-title">选择你的身份</div>
-  <div class="tier-grid">
-    <div class="tier-item tier-1" onclick="openModal(1)">
-      <div class="left">
-        <span class="badge">🥉</span>
-        <div class="desc">梦想见证官<span class="tag">数字证书 + 名字上墙</span></div>
-      </div>
-      <div class="price">¥1</div>
-    </div>
-    <div class="tier-item tier-2" onclick="openModal(14.1)">
-      <div class="left">
-        <span class="badge">🥈</span>
-        <div class="desc">白银赞助官<span class="tag">+ 实验日记解锁 + 片尾致谢</span></div>
-      </div>
-      <div class="price">¥14.1</div>
-    </div>
-    <div class="tier-item tier-3" onclick="openModal(141)">
-      <div class="left">
-        <span class="badge">🥇</span>
-        <div class="desc">黄金合伙人<span class="tag">+ 纪录片署名 + 跟我隔空干杯</span></div>
-      </div>
-      <div class="price">¥141</div>
-    </div>
-    <div class="tier-item tier-4" onclick="openModal(1410)">
-      <div class="left">
-        <span class="badge">👑</span>
-        <div class="desc">终极梦想家<span class="tag">+ 我亲手写的明信片寄给你</span></div>
-      </div>
-      <div class="price">¥1,410</div>
+<!-- ===== NAV TABS ===== -->
+<div class="nav-tabs">
+  <button class="nav-tab active" data-tab="tab-feed" onclick="switchTab('tab-feed')">⚡ 实时</button>
+  <button class="nav-tab" data-tab="tab-messages" onclick="switchTab('tab-messages')">💬 留言墙</button>
+  <button class="nav-tab" data-tab="tab-report" onclick="switchTab('tab-report')">📬 周报</button>
+  <button class="nav-tab" data-tab="tab-tiers" onclick="switchTab('tab-tiers')">🎖️ 身份</button>
+</div>
+
+<!-- ================================================================== -->
+<!-- PANEL 1: 实时 -->
+<!-- ================================================================== -->
+<div class="panel active" id="tab-feed">
+  <div class="section">
+    <div class="section-title">⚡ 实时参与</div>
+    <ul class="feed-list" id="feedList"></ul>
+    <p style="text-align:center;font-size:10px;color:var(--text-dim);margin-top:8px;opacity:.6">每5秒刷新 · 你在见证历史</p>
+  </div>
+  <div class="section">
+    <div class="section-title">🎖️ 你的证书</div>
+    <div class="cert-preview" id="certPreview">
+      <span class="cert-badge">🎖️</span>
+      <div class="cert-title">梦想见证官</div>
+      <div class="cert-number" id="certNumber">—</div>
+      <div class="cert-meta" id="certName"><span>你还没有加入</span><span>点击按钮，成为故事的参与者</span></div>
     </div>
   </div>
 </div>
 
-<div class="section">
-  <div class="section-title">⚡ 实时参与</div>
-  <ul class="feed-list" id="feedList"></ul>
-  <p style="text-align:center;font-size:11px;color:var(--text-dim);margin-top:10px;opacity:.6">每5秒刷新 · 你在见证历史</p>
+<!-- ================================================================== -->
+<!-- PANEL 2: 留言墙 -->
+<!-- ================================================================== -->
+<div class="panel" id="tab-messages">
+  <div class="section">
+    <div class="section-title">✍️ 留个言吧</div>
+    <div class="msg-form" id="msgForm">
+      <div id="msgLoggedIn">
+        <textarea id="msgContent" placeholder="写下你想对这个实验说的话…&#10;也许会被选入下一期周报 📖" maxlength="500"></textarea>
+        <div class="row">
+          <input type="text" id="msgAuthor" placeholder="你的昵称" maxlength="16">
+          <button class="submit-btn" onclick="submitMessage()">发布留言</button>
+        </div>
+      </div>
+      <div class="login-hint" id="msgNotLoggedIn">
+        🎖️ <span onclick="openModal(1)">先成为梦想见证官</span>，才能留言
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">💬 留言墙 · <span id="msgCount">0</span> 条</div>
+    <div class="msg-wall" id="msgWall"></div>
+  </div>
 </div>
 
-<div class="section">
-  <div class="section-title">🎖️ 你的证书</div>
-  <div class="cert-preview" id="certPreview">
-    <span class="cert-badge">🎖️</span>
-    <div class="cert-title">梦想见证官</div>
-    <div class="cert-number" id="certNumber">—</div>
-    <div class="cert-meta" id="certName">
-      <span>你还没有加入</span>
-      <span>点击按钮，成为故事的参与者</span>
+<!-- ================================================================== -->
+<!-- PANEL 3: 周报 -->
+<!-- ================================================================== -->
+<div class="panel" id="tab-report">
+  <div class="section">
+    <div class="section-title">📬 实验周报</div>
+    <div class="report-card">
+      <div class="report-date" id="reportDate">—</div>
+      <div class="report-title" id="reportTitle">还没有更新</div>
+      <div class="report-body" id="reportBody">
+        <div class="report-empty">
+          <strong>⏳ 实验正在进行中</strong>
+          实验者的第一期周报将在数据积累到一定程度后发布。<br>
+          关注这个页面，你会第一时间看到。
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="section">
-  <div class="section-title">📹 实验日记</div>
-  <div class="diary-list">
-    <div class="diary-item">
-      <div class="day">DAY 1</div>
-      <div class="text">页面写好了。盯着"上架"按钮看了三分钟——真有人会转这¥1吗？<span class="highlight">然后第一笔到账了。</span></div>
+<!-- ================================================================== -->
+<!-- PANEL 4: 身份（原来那个） -->
+<!-- ================================================================== -->
+<div class="panel" id="tab-tiers">
+  <div class="section">
+    <div class="section-title">选择你的身份</div>
+    <div class="tier-grid">
+      <div class="tier-item tier-1" onclick="openModal(1)">
+        <div class="left"><span class="badge">🥉</span><div class="desc">梦想见证官<span class="tag">数字证书 + 名字上墙</span></div></div>
+        <div class="price">¥1</div>
+      </div>
+      <div class="tier-item tier-2" onclick="openModal(14.1)">
+        <div class="left"><span class="badge">🥈</span><div class="desc">白银赞助官<span class="tag">+ 实验日记解锁 + 片尾致谢</span></div></div>
+        <div class="price">¥14.1</div>
+      </div>
+      <div class="tier-item tier-3" onclick="openModal(141)">
+        <div class="left"><span class="badge">🥇</span><div class="desc">黄金合伙人<span class="tag">+ 纪录片署名 + 隔空干杯</span></div></div>
+        <div class="price">¥141</div>
+      </div>
+      <div class="tier-item tier-4" onclick="openModal(1410)">
+        <div class="left"><span class="badge">👑</span><div class="desc">终极梦想家<span class="tag">+ 手写明信片寄到你手里</span></div></div>
+        <div class="price">¥1,410</div>
+      </div>
     </div>
-    <div class="diary-item">
-      <div class="day">DAY 2</div>
-      <div class="text">37个人参与了。有人备注"加油"，有人写了"替我圆梦"。我忽然意识到——<span class="highlight">这不是在给我钱，是大家一起在做一件事。</span></div>
-    </div>
-    <div class="diary-item">
-      <div class="day">DAY 3 <span style="font-size:10px;color:var(--accent-pink)">· 今天</span></div>
-      <div class="text">收到一个备注写了整段小作文的人。她说她小时候也想过这个。我把那条备注截下来了。<span class="highlight">这比¥1值钱多了。</span></div>
+  </div>
+  <div class="section">
+    <div class="section-title">📹 实验日记</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="msg-card" style="border-left-color:var(--accent-blue)">
+        <div class="head"><div class="name" style="font-size:11px;color:var(--accent-blue);letter-spacing:1px">DAY 1</div></div>
+        <div class="content">页面写好了。盯着"上架"按钮看了三分钟——真有人会转这¥1吗？<span style="color:var(--accent-pink)">然后第一笔到账了。</span></div>
+      </div>
+      <div class="msg-card" style="border-left-color:var(--accent-blue)">
+        <div class="head"><div class="name" style="font-size:11px;color:var(--accent-blue);letter-spacing:1px">DAY 2</div></div>
+        <div class="content">37个人参与了。有人备注"加油"，有人写了"替我圆梦"。<span style="color:var(--accent-pink)">这不是在给我钱，是大家一起在做一件事。</span></div>
+      </div>
+      <div class="msg-card" style="border-left-color:var(--accent-pink)">
+        <div class="head"><div class="name" style="font-size:11px;color:var(--accent-pink);letter-spacing:1px">DAY 3 · 今天</div></div>
+        <div class="content">收到一个备注写了整段小作文的人。她说她小时候也想过这个。<span style="color:var(--accent-pink)">这比¥1值钱多了。</span></div>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- ===== FOOTER ===== -->
 <div class="footer">
   <p>这不是乞讨，不是投资，不是众筹。</p>
-  <p>你支付的是 <strong>数字内容访问权</strong>（PDF证书 + 实验日记 + 纪录片）。</p>
+  <p>你支付的是 <strong>数字内容访问权</strong>（证书 + 实验日记 + 纪录片）。</p>
   <p>实验人对结果不做任何承诺。这就是一个故事。</p>
-  <p style="margin-top:8px">⚡ 始于 ¥13.6 — 一个AI助手和它的主人的一场豪赌</p>
+  <p style="margin-top:6px">⚡ 始于 ¥13.6 — 一个AI助手和它的主人的一场豪赌</p>
+  <!-- 隐藏的后台入口 -->
+  <div class="admin-entry" id="adminEntry">⚙️</div>
 </div>
 
+<!-- ===== PAYMENT MODAL ===== -->
 <div class="modal-overlay" id="paymentModal">
   <div class="modal">
     <h2 id="modalTitle">🥉 梦想见证官</h2>
@@ -387,26 +506,135 @@
     <div class="qrcode-box" id="qrBox">
       <div class="placeholder">
         <strong>📱 微信收款码</strong>
-        <span>扫码支付即可加入<br>请在支付后点击下方按钮</span>
+        <span>扫码支付即可加入</span>
       </div>
     </div>
-    <input class="name-input" id="nameInput" placeholder="输入你的昵称（显示在证书上）" maxlength="20">
+    <input class="name-input" id="nameInput" placeholder="输入昵称（显示在证书上）" maxlength="20">
     <button class="paid-btn" onclick="onPaid()">✅ 我已支付，生成证书</button>
     <button class="close-btn" onclick="closeModal()">算了，我再想想</button>
   </div>
 </div>
 
+<!-- ===== ADMIN PANEL ===== -->
+<div class="admin-overlay" id="adminPanel">
+  <div class="admin-header">
+    <h2>⚙️ 实验者后台</h2>
+    <button class="admin-close" onclick="closeAdmin()">✕</button>
+  </div>
+  <div class="admin-body">
+    <!-- Stats -->
+    <div class="admin-stat">
+      <div class="admin-stat-box"><div class="num" id="adminTotal">0</div><div class="label">总留言</div></div>
+      <div class="admin-stat-box"><div class="num" id="adminFeatured">0</div><div class="label">精选</div></div>
+      <div class="admin-stat-box"><div class="num" id="adminToday">0</div><div class="label">今日新增</div></div>
+    </div>
+
+    <!-- Export -->
+    <div style="display:flex;gap:6px;margin-bottom:12px">
+      <button class="save-btn" style="flex:1;font-size:11px;padding:8px" onclick="exportContent()">📋 导出为创作素材</button>
+      <button class="save-btn" style="flex:1;font-size:11px;padding:8px;background:rgba(212,168,83,.15);color:var(--accent-gold)" onclick="exportFeatured()">⭐ 导出精选留言</button>
+    </div>
+
+    <!-- Report Editor -->
+    <div style="background:var(--bg-card);border-radius:var(--radius-sm);padding:14px;margin-bottom:12px">
+      <div style="font-size:12px;font-weight:600;color:var(--text-dim);margin-bottom:8px">📬 编辑本期周报</div>
+      <div class="report-edit">
+        <input type="text" id="editReportDate" placeholder="期数，如「第1期 · 7月第一周」">
+        <input type="text" id="editReportTitle" placeholder="标题">
+        <textarea id="editReportBody" placeholder="写周报内容…&#10;&#10;支持标记：&#10;[hl]高亮文字[/hl] — 粉色强调&#10;[stat]数据[/stat] — 蓝色数据标签"></textarea>
+        <button class="save-btn" onclick="saveReport()">💾 保存周报</button>
+      </div>
+    </div>
+
+    <!-- Messages List -->
+    <div style="font-size:12px;font-weight:600;color:var(--text-dim);margin-bottom:8px">💬 全部留言</div>
+    <div id="adminMsgList"></div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
 <div class="toast" id="toast"></div>
 
 <script>
+// ====================================================================
+// CONFIG — 手动更新区
+// ====================================================================
 const CONFIG = {
   totalRaised: 1187,
   totalCount: 1187,
   todayCount: 23,
-  daysRunning: 3,
-  startDate: '2026-06-27'
+  daysRunning: 3
 };
 
+// 周报数据
+let reportData = JSON.parse(localStorage.getItem('dreamReport') || 'null') || null;
+
+// ====================================================================
+// DATA LAYER — 可替换接口
+// ====================================================================
+class DataService {
+  constructor() {
+    this.messages = JSON.parse(localStorage.getItem('dreamMessages') || '[]');
+    this.nextId = parseInt(localStorage.getItem('dreamMsgNextId') || '1');
+  }
+
+  _save() {
+    localStorage.setItem('dreamMessages', JSON.stringify(this.messages));
+    localStorage.setItem('dreamMsgNextId', String(this.nextId));
+  }
+
+  getAll() { return [...this.messages].reverse(); }
+
+  getFeatured() { return this.messages.filter(m => m.featured).reverse(); }
+
+  getRecent(limit = 20) { return [...this.messages].reverse().slice(0, limit); }
+
+  addMessage(author, content) {
+    const msg = {
+      id: this.nextId++,
+      author: author.trim() || '匿名',
+      content: content.trim(),
+      featured: false,
+      time: Date.now(),
+      date: new Date().toLocaleString('zh-CN'),
+      likes: 0
+    };
+    this.messages.push(msg);
+    this._save();
+    return msg;
+  }
+
+  toggleFeatured(id) {
+    const m = this.messages.find(x => x.id === id);
+    if (m) { m.featured = !m.featured; this._save(); }
+    return m;
+  }
+
+  deleteMessage(id) {
+    this.messages = this.messages.filter(m => m.id !== id);
+    this._save();
+  }
+
+  getStats() {
+    const today = new Date().toDateString();
+    const todayMsgs = this.messages.filter(m => new Date(m.time).toDateString() === today);
+    return {
+      total: this.messages.length,
+      featured: this.messages.filter(m => m.featured).length,
+      today: todayMsgs.length
+    };
+  }
+
+  // 未来切换到 LeanCloud 时，只需重写这个类的方法
+  // async addMessage(author, content) { ... POST to LeanCloud ... }
+  // async getAll() { ... GET from LeanCloud ... }
+}
+
+const db = new DataService();
+
+// ====================================================================
+// STATE
+// ====================================================================
 const sampleFeed = [
   {name:'张同学', city:'成都', amount:1, time:'3分钟前', color:'#7986cb'},
   {name:'Lily', city:'杭州', amount:14.1, time:'12分钟前', color:'#e0a2c4'},
@@ -421,68 +649,92 @@ const sampleFeed = [
 let feedData = [...sampleFeed];
 let userCert = JSON.parse(localStorage.getItem('dreamCert') || 'null');
 
+// ====================================================================
+// INIT
+// ====================================================================
 function init(){
   updateStats();
   renderFeed();
+  renderMessages();
+  renderReport();
   if(userCert) showCert(userCert);
+  updateMsgLoginState();
   document.getElementById('daysRunning').textContent = CONFIG.daysRunning;
 }
 init();
 
+// ====================================================================
+// STATS
+// ====================================================================
 function updateStats(){
   const total = CONFIG.totalRaised;
   document.getElementById('totalRaised').textContent = total.toLocaleString();
   document.getElementById('totalCount').textContent = CONFIG.totalCount.toLocaleString();
   document.getElementById('todayCount').textContent = CONFIG.todayCount;
-  const pct = Math.min(total / 1410000000 * 100, 100);
-  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressFill').style.width = Math.min(total / 1410000000 * 100, 100) + '%';
 }
 
+// ====================================================================
+// TAB SWITCH
+// ====================================================================
+function switchTab(tabId){
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+  // Refresh content when switching tabs
+  if(tabId === 'tab-messages') renderMessages();
+  if(tabId === 'tab-report') renderReport();
+}
+
+// ====================================================================
+// FEED
+// ====================================================================
 function renderFeed(){
-  const list = document.getElementById('feedList');
-  list.innerHTML = feedData.map(f => {
-    const amtClass = f.amount === 1 ? 'amount-1' : f.amount === 14.1 ? 'amount-14' : 'amount-141';
-    const initial = f.name.charAt(0);
-    return '<li class="feed-item"><div class="avatar" style="background:'+f.color+'22;color:'+f.color+'">'+initial+'</div><div class="info"><div class="name">'+f.name+'</div><div class="meta">'+f.city+' · '+f.time+'</div></div><div class="amount '+amtClass+'">¥'+f.amount+'</div></li>';
+  document.getElementById('feedList').innerHTML = feedData.map(f => {
+    const ac = f.amount === 1 ? 'amt-1' : f.amount === 14.1 ? 'amt-14' : 'amt-141';
+    return '<li class="feed-item"><div class="avatar" style="background:'+f.color+'22;color:'+f.color+'">'+f.name[0]+'</div><div class="info"><div class="name">'+f.name+'</div><div class="meta">'+f.city+' · '+f.time+'</div></div><div class="amount '+ac+'">¥'+f.amount+'</div></li>';
   }).join('');
 }
 
+// Simulate new entries
 setInterval(() => {
   const cities = ['成都','北京','上海','广州','深圳','杭州','武汉','南京','西安','长沙','重庆','厦门'];
   const names = ['匿名','小Z','Cc','Momo','老王','小野','阿岚','Kit','树懒','J','白','柠檬'];
-  const newOne = {
-    name: names[Math.floor(Math.random()*names.length)],
-    city: cities[Math.floor(Math.random()*cities.length)],
-    amount: [1,1,1,1,14.1,1,1,141,1][Math.floor(Math.random()*9)],
-    time: '刚刚',
-    color: ['#7986cb','#e0a2c4','#9c8fd0'][Math.floor(Math.random()*3)]
-  };
-  feedData.unshift(newOne);
-  if(feedData.length > 30) feedData.pop();
+  const n = {name:names[Math.random()*names.length|0], city:cities[Math.random()*cities.length|0], amount:[1,1,1,1,14.1,1,1,141,1][Math.random()*9|0], time:'刚刚', color:['#7986cb','#e0a2c4','#9c8fd0'][Math.random()*3|0]};
+  feedData.unshift(n);
+  if(feedData.length>30) feedData.pop();
   renderFeed();
-  CONFIG.totalCount++;
-  CONFIG.totalRaised += newOne.amount;
-  CONFIG.todayCount++;
+  CONFIG.totalCount++; CONFIG.totalRaised += n.amount; CONFIG.todayCount++;
   updateStats();
-}, 5000 + Math.random()*3000);
+}, 5000+Math.random()*3000);
 
+// ====================================================================
+// CERTIFICATE
+// ====================================================================
+function showCert(cert){
+  document.getElementById('certNumber').textContent = String(cert.number).padStart(7,'0');
+  document.getElementById('certName').innerHTML = '<span style="font-size:15px;font-weight:600;color:var(--text-bright)">'+cert.name+'</span><span>贡献 ¥'+cert.amount+' · '+cert.date+'</span>';
+}
+
+// ====================================================================
+// PAYMENT MODAL
+// ====================================================================
 function openModal(amount){
-  if(userCert){ showToast('你已经加入啦！证书在下面 🎖️'); return; }
-  const tierInfo = {1:{title:'🥉 梦想见证官',sub:'¥1 · 数字证书 + 名字上墙'},14.1:{title:'🥈 白银赞助官',sub:'¥14.1 · + 实验日记 + 片尾致谢'},141:{title:'🥇 黄金合伙人',sub:'¥141 · + 纪录片署名 + 干杯'},1410:{title:'👑 终极梦想家',sub:'¥1,410 · + 手写明信片'}};
-  const info = tierInfo[amount] || tierInfo[1];
-  document.getElementById('modalTitle').textContent = info.title;
-  document.getElementById('modalSub').textContent = info.sub;
+  if(userCert){ showToast('你已经加入啦！证书在「实时」页 🎖️'); return; }
+  const t = {1:{title:'🥉 梦想见证官',sub:'¥1 · 数字证书 + 名字上墙'},14.1:{title:'🥈 白银赞助官',sub:'¥14.1 · + 实验日记 + 片尾致谢'},141:{title:'🥇 黄金合伙人',sub:'¥141 · + 纪录片署名 + 干杯'},1410:{title:'👑 终极梦想家',sub:'¥1,410 · + 手写明信片'}};
+  const i = t[amount]||t[1];
+  document.getElementById('modalTitle').textContent = i.title;
+  document.getElementById('modalSub').textContent = i.sub;
   document.getElementById('paymentModal').classList.add('active');
   document.getElementById('nameInput').value = '';
   document.getElementById('nameInput').dataset.amount = amount;
 }
-
 function closeModal(){ document.getElementById('paymentModal').classList.remove('active'); }
-
 function onPaid(){
   const name = document.getElementById('nameInput').value.trim();
   if(!name){ showToast('请输入你的昵称 ✏️'); return; }
-  const amount = parseFloat(document.getElementById('nameInput').dataset.amount) || 1;
+  const amount = parseFloat(document.getElementById('nameInput').dataset.amount)||1;
   const cert = {name, amount, number: CONFIG.totalCount + 1, date: new Date().toLocaleDateString('zh-CN')};
   userCert = cert;
   localStorage.setItem('dreamCert', JSON.stringify(cert));
@@ -490,26 +742,195 @@ function onPaid(){
   showCert(cert);
   feedData.unshift({name, city:'来自页面', amount, time:'刚刚', color:'#d4a853'});
   renderFeed();
-  CONFIG.totalCount++;
-  CONFIG.totalRaised += amount;
+  CONFIG.totalCount++; CONFIG.totalRaised += amount;
   updateStats();
-  showToast('🎉 恭喜你成为第 '+cert.number+' 号梦想见证官！');
+  updateMsgLoginState();
+  showToast('🎉 恭喜你成为第 '+cert.number+' 号梦想见证官！现在可以去留言了 💬');
+}
+document.getElementById('paymentModal').addEventListener('click', function(e){ if(e.target === this) closeModal(); });
+
+// ====================================================================
+// MESSAGES
+// ====================================================================
+function updateMsgLoginState(){
+  const loggedIn = document.getElementById('msgLoggedIn');
+  const notLoggedIn = document.getElementById('msgNotLoggedIn');
+  if(userCert){
+    loggedIn.style.display = 'block';
+    notLoggedIn.style.display = 'none';
+    document.getElementById('msgAuthor').value = userCert.name;
+  } else {
+    loggedIn.style.display = 'none';
+    notLoggedIn.style.display = 'block';
+  }
 }
 
-function showCert(cert){
-  document.getElementById('certNumber').textContent = String(cert.number).padStart(7,'0');
-  document.getElementById('certName').innerHTML = '<span style="font-size:16px;font-weight:600;color:var(--text-bright)">'+cert.name+'</span><span>贡献 ¥'+cert.amount+' · '+cert.date+'</span>';
+function submitMessage(){
+  const content = document.getElementById('msgContent').value.trim();
+  const author = document.getElementById('msgAuthor').value.trim() || '匿名';
+  if(!content){ showToast('写点内容再发吧 ✍️'); return; }
+  if(content.length > 500){ showToast('内容太长了，最多500字'); return; }
+  if(!userCert){ showToast('请先成为见证官 🎖️'); return; }
+
+  const msg = db.addMessage(author, content);
+  document.getElementById('msgContent').value = '';
+  showToast('✅ 留言已发布！');
+  renderMessages();
 }
 
+function renderMessages(){
+  const msgs = db.getRecent(50);
+  document.getElementById('msgCount').textContent = db.getAll().length;
+  const wall = document.getElementById('msgWall');
+  if(msgs.length === 0){
+    wall.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-dim);font-size:13px">还没有留言<br>成为见证官，写下你想说的话</div>';
+    return;
+  }
+  wall.innerHTML = msgs.map(m => {
+    const cls = m.featured ? 'msg-card featured' : 'msg-card';
+    const tag = m.featured ? '<span class="tag">⭐ 精选</span>' : '';
+    const timeAgo = getTimeAgo(m.time);
+    return '<div class="'+cls+'"><div class="head"><div class="name">'+escHtml(m.author)+'</div>'+tag+'</div><div class="content">'+escHtml(m.content)+'</div><div class="time">'+timeAgo+' <span class="reaction" onclick="likeMessage('+m.id+')">❤️ '+m.likes+'</span></div></div>';
+  }).join('');
+}
+
+function likeMessage(id){
+  const m = db.messages.find(x => x.id === id);
+  if(m){ m.likes++; db._save(); renderMessages(); }
+}
+
+function getTimeAgo(ts){
+  const diff = Date.now() - ts;
+  if(diff < 60000) return '刚刚';
+  if(diff < 3600000) return Math.floor(diff/60000)+'分钟前';
+  if(diff < 86400000) return Math.floor(diff/3600000)+'小时前';
+  return Math.floor(diff/86400000)+'天前';
+}
+
+function escHtml(s){ return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]||c}) }
+
+// ====================================================================
+// REPORT
+// ====================================================================
+function renderReport(){
+  if(!reportData){
+    document.getElementById('reportDate').textContent = '—';
+    document.getElementById('reportTitle').textContent = '还没有更新';
+    document.getElementById('reportBody').innerHTML = '<div class="report-empty"><strong>⏳ 实验正在进行中</strong>实验者的第一期周报将在数据积累到一定程度后发布。<br>关注这个页面，你会第一时间看到。</div>';
+    return;
+  }
+  document.getElementById('reportDate').textContent = reportData.date;
+  document.getElementById('reportTitle').textContent = reportData.title;
+  // Parse markup
+  let html = escHtml(reportData.body).replace(/\[hl\]([\s\S]*?)\[\/hl\]/g, '<span class="hl">$1</span>').replace(/\[stat\]([\s\S]*?)\[\/stat\]/g, '<span class="stat">$1</span>').replace(/\n/g, '<br>');
+  document.getElementById('reportBody').innerHTML = html;
+}
+
+// ====================================================================
+// ADMIN PANEL
+// ====================================================================
+// Entry: click the hidden gear 5 times rapidly
+let adminClickCount = 0;
+let adminTimer = null;
+document.getElementById('adminEntry').addEventListener('click', function(){
+  adminClickCount++;
+  if(adminClickCount >= 5){
+    openAdmin();
+    adminClickCount = 0;
+  }
+  clearTimeout(adminTimer);
+  adminTimer = setTimeout(() => { adminClickCount = 0; }, 1500);
+});
+
+function openAdmin(){
+  document.getElementById('adminPanel').classList.add('active');
+  renderAdmin();
+}
+function closeAdmin(){ document.getElementById('adminPanel').classList.remove('active'); }
+
+function renderAdmin(){
+  const stats = db.getStats();
+  document.getElementById('adminTotal').textContent = stats.total;
+  document.getElementById('adminFeatured').textContent = stats.featured;
+  document.getElementById('adminToday').textContent = stats.today;
+
+  // Pre-fill report editor
+  if(reportData){
+    document.getElementById('editReportDate').value = reportData.date;
+    document.getElementById('editReportTitle').value = reportData.title;
+    document.getElementById('editReportBody').value = reportData.body;
+  }
+
+  const allMsgs = db.getAll();
+  const list = document.getElementById('adminMsgList');
+  if(allMsgs.length === 0){
+    list.innerHTML = '<div class="admin-empty">还没有留言</div>';
+    return;
+  }
+  list.innerHTML = allMsgs.map(m => {
+    const fBtn = m.featured
+      ? '<button class="btn-unfeature" onclick="adminToggle('+m.id+')">取消精选</button>'
+      : '<button class="btn-feature" onclick="adminToggle('+m.id+')">⭐ 设为精选</button>';
+    return '<div class="admin-msg"><div class="head"><div class="name">'+escHtml(m.author)+'</div><div class="time">'+m.date+'</div></div><div class="content">'+escHtml(m.content)+'</div><div class="actions">'+fBtn+'<button class="btn-delete" onclick="adminDelete('+m.id+')">🗑️ 删除</button></div></div>';
+  }).join('');
+}
+
+function adminToggle(id){
+  db.toggleFeatured(id);
+  renderAdmin();
+  renderMessages();
+}
+function adminDelete(id){
+  if(!confirm('确定删除这条留言？')) return;
+  db.deleteMessage(id);
+  renderAdmin();
+  renderMessages();
+}
+
+function saveReport(){
+  const date = document.getElementById('editReportDate').value.trim();
+  const title = document.getElementById('editReportTitle').value.trim();
+  const body = document.getElementById('editReportBody').value.trim();
+  if(!date || !title || !body){ showToast('请填写完整'); return; }
+  reportData = {date, title, body};
+  localStorage.setItem('dreamReport', JSON.stringify(reportData));
+  renderReport();
+  showToast('✅ 周报已保存，切换到「周报」标签查看');
+}
+
+function exportContent(){
+  const all = db.getAll();
+  if(all.length === 0){ showToast('还没有留言可导出'); return; }
+  let text = '【十四亿分之一 · 留言素材】\n导出时间：'+new Date().toLocaleString('zh-CN')+'\n共 '+all.length+' 条留言\n\n' + all.map(m => '['+(m.featured?'精选':'普通')+'] '+m.author+' ('+m.date+')\n'+m.content+'\n❤️ '+m.likes+'\n---\n').join('\n');
+  copyToClipboard(text);
+  showToast('✅ 已复制 '+all.length+' 条留言到剪贴板');
+}
+
+function exportFeatured(){
+  const featured = db.getFeatured();
+  if(featured.length === 0){ showToast('还没有精选留言'); return; }
+  let text = '【十四亿分之一 · 精选留言】\n共 '+featured.length+' 条\n\n' + featured.map((m,i) => '⭐ No.'+(i+1)+' '+m.author+'\n'+m.content+'\n❤️ '+m.likes+'\n---\n').join('\n');
+  copyToClipboard(text);
+  showToast('✅ 已复制 '+featured.length+' 条精选留言到剪贴板');
+}
+
+function copyToClipboard(text){
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{document.execCommand('copy')}catch(e){}
+  document.body.removeChild(ta);
+}
+
+// ====================================================================
+// TOAST
+// ====================================================================
 function showToast(msg){
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
+  el.textContent = msg; el.classList.add('show');
   clearTimeout(el._timer);
   el._timer = setTimeout(() => el.classList.remove('show'), 2500);
 }
-
-document.getElementById('paymentModal').addEventListener('click', function(e){ if(e.target === this) closeModal(); });
 </script>
 </body>
 </html>
