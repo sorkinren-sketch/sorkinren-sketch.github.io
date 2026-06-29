@@ -633,6 +633,35 @@ class DataService {
 const db = new DataService();
 
 // ====================================================================
+// 小程序环境检测
+// ====================================================================
+const isMiniProgram = (typeof window.__wxjs_environment !== 'undefined' && window.__wxjs_environment === 'miniprogram') ||
+  navigator.userAgent.indexOf('miniProgram') > -1 ||
+  navigator.userAgent.indexOf('miniprogram') > -1;
+
+// 在小程序环境下，用原生支付代替收款码弹窗
+function openNativePayment(amount) {
+  try {
+    wx.miniProgram.navigateTo({
+      url: '/pages/payment/payment?amount=' + amount + '&name=' + encodeURIComponent(document.getElementById('nameInput')?.value || '')
+    });
+  } catch(e) {
+    // fallback: 走原来的收款码弹窗
+    openModal(amount);
+  }
+}
+
+// 替换原来的openModal，在小程序里走原生支付
+const _originalOpenModal = window.openModal;
+window.openModal = function(amount) {
+  if (isMiniProgram) {
+    openNativePayment(amount);
+  } else {
+    _originalOpenModal(amount);
+  }
+};
+
+// ====================================================================
 // STATE
 // ====================================================================
 const sampleFeed = [
