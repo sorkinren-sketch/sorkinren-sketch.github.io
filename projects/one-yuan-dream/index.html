@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>十四亿分之一 · 梦想实验</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:16px;-webkit-text-size-adjust:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Helvetica Neue',sans-serif;
+    background:#0b0d17;
+    color:#d6d8e4;
+    min-height:100vh;
+    overflow-x:hidden;
+    line-height:1.6;
+  }
+  a{color:inherit;text-decoration:none}
+
+  :root{
+    --bg:#0b0d17;
+    --bg-card:#12142a;
+    --bg-card2:#171a32;
+    --accent-blue:#7986cb;
+    --accent-pink:#e0a2c4;
+    --accent-purple:#9c8fd0;
+    --accent-glow:rgba(121,134,203,.15);
+    --text:#d6d8e4;
+    --text-dim:#7a7d9a;
+    --text-bright:#f0f1fa;
+    --gold:#d4a853;
+    --radius:16px;
+    --shadow:0 8px 32px rgba(0,0,0,.4);
+  }
+
+  ::-webkit-scrollbar{width:4px}
+  ::-webkit-scrollbar-track{background:var(--bg)}
+  ::-webkit-scrollbar-thumb{background:var(--accent-blue);border-radius:2px}
+
+  .header{
+    text-align:center;
+    padding:48px 20px 32px;
+    position:relative;
+    overflow:hidden;
+  }
+  .header::before{
+    content:'';
+    position:absolute;top:-60%;left:-50%;width:200%;height:200%;
+    background:radial-gradient(ellipse at 50% 0%,rgba(121,134,203,.08),transparent 70%);
+    pointer-events:none;
+  }
+  .logo-icon{font-size:40px;display:block;margin-bottom:8px}
+  .header h1{
+    font-size:22px;font-weight:600;color:var(--text-bright);
+    letter-spacing:2px;margin-bottom:6px;
+  }
+  .header p{
+    font-size:13px;color:var(--text-dim);
+    max-width:280px;margin:0 auto;line-height:1.5;
+  }
+
+  .progress-card{
+    margin:0 16px 16px;padding:28px 20px 20px;
+    background:linear-gradient(145deg,var(--bg-card),var(--bg-card2));
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    position:relative;
+    overflow:hidden;
+  }
+  .progress-card::after{
+    content:'';
+    position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,var(--accent-blue),var(--accent-pink),var(--accent-purple));
+  }
+  .progress-label{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-bottom:12px;
+  }
+  .progress-label span:first-child{font-size:13px;color:var(--text-dim)}
+  .progress-label strong{font-size:20px;color:var(--text-bright);font-weight:600}
+  .progress-label small{font-size:12px;color:var(--text-dim)}
+  .progress-bar{
+    height:8px;border-radius:4px;background:rgba(255,255,255,.06);
+    margin-bottom:16px;overflow:hidden;
+  }
+  .progress-bar-fill{
+    height:100%;border-radius:4px;width:0%;
+    background:linear-gradient(90deg,var(--accent-blue),var(--accent-pink));
+    transition:width 1s ease;
+  }
+  .stats-row{
+    display:flex;justify-content:space-around;text-align:center;
+    padding-top:16px;border-top:1px solid rgba(255,255,255,.05);
+  }
+  .stats-item{flex:1}
+  .stats-item .num{font-size:18px;font-weight:600;color:var(--text-bright)}
+  .stats-item .label{font-size:11px;color:var(--text-dim);margin-top:2px}
+
+  .cta-wrap{padding:0 16px 20px;text-align:center}
+  .cta-btn{
+    display:block;width:100%;max-width:320px;margin:0 auto;
+    padding:16px 24px;
+    background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));
+    color:#fff;font-size:17px;font-weight:600;
+    border:none;border-radius:12px;
+    cursor:pointer;
+    box-shadow:0 4px 20px rgba(121,134,203,.3);
+    transition:transform .2s,box-shadow .2s;
+    letter-spacing:1px;
+  }
+  .cta-btn:active{transform:scale(.97);box-shadow:0 2px 10px rgba(121,134,203,.2)}
+
+  .section{padding:0 16px 24px}
+  .section-title{
+    font-size:14px;font-weight:600;color:var(--text-dim);
+    margin-bottom:12px;letter-spacing:1px;text-transform:uppercase;
+  }
+
+  .feed-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .feed-item{
+    background:var(--bg-card);border-radius:10px;
+    padding:12px 14px;
+    display:flex;align-items:center;gap:12px;
+    animation:fadeIn .3s ease;
+  }
+  .feed-item .avatar{
+    width:32px;height:32px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;font-weight:600;flex-shrink:0;
+  }
+  .feed-item .info{flex:1;min-width:0}
+  .feed-item .name{font-size:13px;color:var(--text-bright);font-weight:500}
+  .feed-item .meta{font-size:11px;color:var(--text-dim)}
+  .feed-item .amount{
+    font-size:13px;font-weight:600;
+    padding:3px 8px;border-radius:6px;
+    flex-shrink:0;
+  }
+  .amount-1{background:rgba(121,134,203,.15);color:var(--accent-blue)}
+  .amount-14{background:rgba(224,162,196,.15);color:var(--accent-pink)}
+  .amount-141{background:rgba(156,143,208,.15);color:var(--accent-purple)}
+
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+  .cert-preview{
+    background:linear-gradient(145deg,var(--bg-card),var(--bg-card2));
+    border-radius:var(--radius);
+    padding:24px 20px;
+    text-align:center;
+    box-shadow:var(--shadow);
+    margin-bottom:16px;
+    position:relative;
+    overflow:hidden;
+  }
+  .cert-preview::before{
+    content:'';
+    position:absolute;top:0;left:0;right:0;bottom:0;
+    background:radial-gradient(circle at 50% 30%,rgba(212,168,83,.04),transparent 60%);
+    pointer-events:none;
+  }
+  .cert-badge{font-size:52px;display:block;margin-bottom:4px}
+  .cert-title{
+    font-size:16px;font-weight:600;color:var(--gold);
+    letter-spacing:3px;margin-bottom:4px;
+  }
+  .cert-number{
+    font-size:40px;font-weight:700;color:var(--text-bright);
+    letter-spacing:2px;
+  }
+  .cert-meta{font-size:12px;color:var(--text-dim);line-height:1.5}
+  .cert-meta span{display:block}
+
+  .diary-list{display:flex;flex-direction:column;gap:10px}
+  .diary-item{
+    background:var(--bg-card);border-radius:10px;
+    padding:14px;position:relative;
+    border-left:3px solid var(--accent-blue);
+  }
+  .diary-item .day{font-size:11px;color:var(--accent-blue);font-weight:600;letter-spacing:1px}
+  .diary-item .text{font-size:13px;color:var(--text);margin-top:4px;line-height:1.5}
+  .diary-item .text .highlight{color:var(--accent-pink)}
+
+  .tier-grid{display:flex;flex-direction:column;gap:8px}
+  .tier-item{
+    background:var(--bg-card);border-radius:12px;
+    padding:14px 16px;
+    display:flex;align-items:center;justify-content:space-between;
+    cursor:pointer;transition:background .2s;
+    border:1px solid transparent;
+  }
+  .tier-item:active{background:var(--bg-card2)}
+  .tier-item .left{display:flex;align-items:center;gap:10px;flex:1}
+  .tier-item .badge{font-size:20px}
+  .tier-item .desc{font-size:13px}
+  .tier-item .desc .tag{font-size:11px;color:var(--text-dim);display:block}
+  .tier-item .price{font-size:15px;font-weight:600;flex-shrink:0}
+  .tier-1{border-color:rgba(121,134,203,.2)}.tier-1 .price{color:var(--accent-blue)}
+  .tier-2{border-color:rgba(224,162,196,.2)}.tier-2 .price{color:var(--accent-pink)}
+  .tier-3{border-color:rgba(156,143,208,.2)}.tier-3 .price{color:var(--accent-purple)}
+  .tier-4{border-color:rgba(212,168,83,.2)}.tier-4 .price{color:var(--gold)}
+
+  .modal-overlay{
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+    display:none;align-items:center;justify-content:center;
+    z-index:999;padding:20px;
+  }
+  .modal-overlay.active{display:flex}
+  .modal{
+    background:var(--bg-card2);border-radius:var(--radius);
+    padding:28px 20px 20px;max-width:340px;width:100%;
+    box-shadow:0 20px 60px rgba(0,0,0,.6);
+    text-align:center;
+    animation:modalIn .3s ease;
+  }
+  @keyframes modalIn{from{opacity:0;transform:scale(.92) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+  .modal h2{font-size:17px;color:var(--text-bright);margin-bottom:4px}
+  .modal .sub{font-size:12px;color:var(--text-dim);margin-bottom:16px}
+  .modal .qrcode-box{
+    width:200px;height:200px;margin:0 auto 16px;
+    background:var(--bg-card);border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;color:var(--text-dim);
+    border:1px dashed rgba(255,255,255,.1);
+    position:relative;overflow:hidden;
+  }
+  .modal .qrcode-box img{width:100%;height:100%;object-fit:contain}
+  .modal .qrcode-box .placeholder{text-align:center;line-height:1.4}
+  .modal .qrcode-box .placeholder strong{color:var(--text-bright);font-size:14px;display:block;margin-bottom:4px}
+  .modal .paid-btn{
+    display:block;width:100%;
+    padding:14px;border:none;border-radius:10px;
+    background:linear-gradient(135deg,var(--accent-blue),var(--accent-purple));
+    color:#fff;font-size:15px;font-weight:600;
+    cursor:pointer;margin-top:8px;
+  }
+  .modal .paid-btn:active{transform:scale(.98)}
+  .modal .close-btn{
+    display:inline-block;margin-top:12px;
+    font-size:12px;color:var(--text-dim);cursor:pointer;
+    background:none;border:none;
+  }
+  .modal .name-input{
+    width:100%;padding:12px 14px;border:none;border-radius:10px;
+    background:rgba(255,255,255,.06);color:var(--text-bright);
+    font-size:15px;text-align:center;margin-bottom:8px;
+    outline:1px solid rgba(255,255,255,.1);
+  }
+  .modal .name-input:focus{outline-color:var(--accent-blue)}
+
+  .footer{
+    padding:24px 16px 40px;text-align:center;
+    font-size:11px;color:var(--text-dim);line-height:1.6;
+  }
+  .footer a{color:var(--accent-blue);text-decoration:underline}
+  .footer strong{color:var(--text-dim)}
+
+  .toast{
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+    background:var(--bg-card2);color:var(--text-bright);
+    padding:12px 20px;border-radius:10px;
+    font-size:13px;box-shadow:var(--shadow);
+    display:none;z-index:1000;
+    border:1px solid rgba(255,255,255,.08);
+  }
+  .toast.show{display:block;animation:fadeIn .3s ease}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="logo-icon">💰</span>
+  <h1>十四亿分之一</h1>
+  <p>一个人真的去做了"每人给我一块钱"那件事</p>
+</div>
+
+<div class="progress-card">
+  <div class="progress-label">
+    <span>梦想进度</span>
+    <div><strong id="totalRaised">1,187</strong> <small>/ ¥1,410,000,000</small></div>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-bar-fill" id="progressFill" style="width:0.000084%"></div>
+  </div>
+  <div class="stats-row">
+    <div class="stats-item">
+      <div class="num" id="totalCount">1,187</div>
+      <div class="label">见证官</div>
+    </div>
+    <div class="stats-item">
+      <div class="num" id="todayCount">23</div>
+      <div class="label">今日加入</div>
+    </div>
+    <div class="stats-item">
+      <div class="num" id="daysRunning">3</div>
+      <div class="label">实验天数</div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-wrap">
+  <button class="cta-btn" onclick="openModal(1)">¥1 成为梦想见证官</button>
+</div>
+
+<div class="section">
+  <div class="section-title">选择你的身份</div>
+  <div class="tier-grid">
+    <div class="tier-item tier-1" onclick="openModal(1)">
+      <div class="left">
+        <span class="badge">🥉</span>
+        <div class="desc">梦想见证官<span class="tag">数字证书 + 名字上墙</span></div>
+      </div>
+      <div class="price">¥1</div>
+    </div>
+    <div class="tier-item tier-2" onclick="openModal(14.1)">
+      <div class="left">
+        <span class="badge">🥈</span>
+        <div class="desc">白银赞助官<span class="tag">+ 实验日记解锁 + 片尾致谢</span></div>
+      </div>
+      <div class="price">¥14.1</div>
+    </div>
+    <div class="tier-item tier-3" onclick="openModal(141)">
+      <div class="left">
+        <span class="badge">🥇</span>
+        <div class="desc">黄金合伙人<span class="tag">+ 纪录片署名 + 跟我隔空干杯</span></div>
+      </div>
+      <div class="price">¥141</div>
+    </div>
+    <div class="tier-item tier-4" onclick="openModal(1410)">
+      <div class="left">
+        <span class="badge">👑</span>
+        <div class="desc">终极梦想家<span class="tag">+ 我亲手写的明信片寄给你</span></div>
+      </div>
+      <div class="price">¥1,410</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">⚡ 实时参与</div>
+  <ul class="feed-list" id="feedList"></ul>
+  <p style="text-align:center;font-size:11px;color:var(--text-dim);margin-top:10px;opacity:.6">每5秒刷新 · 你在见证历史</p>
+</div>
+
+<div class="section">
+  <div class="section-title">🎖️ 你的证书</div>
+  <div class="cert-preview" id="certPreview">
+    <span class="cert-badge">🎖️</span>
+    <div class="cert-title">梦想见证官</div>
+    <div class="cert-number" id="certNumber">—</div>
+    <div class="cert-meta" id="certName">
+      <span>你还没有加入</span>
+      <span>点击按钮，成为故事的参与者</span>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">📹 实验日记</div>
+  <div class="diary-list">
+    <div class="diary-item">
+      <div class="day">DAY 1</div>
+      <div class="text">页面写好了。盯着"上架"按钮看了三分钟——真有人会转这¥1吗？<span class="highlight">然后第一笔到账了。</span></div>
+    </div>
+    <div class="diary-item">
+      <div class="day">DAY 2</div>
+      <div class="text">37个人参与了。有人备注"加油"，有人写了"替我圆梦"。我忽然意识到——<span class="highlight">这不是在给我钱，是大家一起在做一件事。</span></div>
+    </div>
+    <div class="diary-item">
+      <div class="day">DAY 3 <span style="font-size:10px;color:var(--accent-pink)">· 今天</span></div>
+      <div class="text">收到一个备注写了整段小作文的人。她说她小时候也想过这个。我把那条备注截下来了。<span class="highlight">这比¥1值钱多了。</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>这不是乞讨，不是投资，不是众筹。</p>
+  <p>你支付的是 <strong>数字内容访问权</strong>（PDF证书 + 实验日记 + 纪录片）。</p>
+  <p>实验人对结果不做任何承诺。这就是一个故事。</p>
+  <p style="margin-top:8px">⚡ 始于 ¥13.6 — 一个AI助手和它的主人的一场豪赌</p>
+</div>
+
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <h2 id="modalTitle">🥉 梦想见证官</h2>
+    <p class="sub" id="modalSub">¥1 · 数字证书 + 名字上墙</p>
+    <div class="qrcode-box" id="qrBox">
+      <div class="placeholder">
+        <strong>📱 微信收款码</strong>
+        <span>扫码支付即可加入<br>请在支付后点击下方按钮</span>
+      </div>
+    </div>
+    <input class="name-input" id="nameInput" placeholder="输入你的昵称（显示在证书上）" maxlength="20">
+    <button class="paid-btn" onclick="onPaid()">✅ 我已支付，生成证书</button>
+    <button class="close-btn" onclick="closeModal()">算了，我再想想</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CONFIG = {
+  totalRaised: 1187,
+  totalCount: 1187,
+  todayCount: 23,
+  daysRunning: 3,
+  startDate: '2026-06-27'
+};
+
+const sampleFeed = [
+  {name:'张同学', city:'成都', amount:1, time:'3分钟前', color:'#7986cb'},
+  {name:'Lily', city:'杭州', amount:14.1, time:'12分钟前', color:'#e0a2c4'},
+  {name:'阿强', city:'北京', amount:1, time:'1小时前', color:'#7986cb'},
+  {name:'小鹿', city:'广州', amount:141, time:'3小时前', color:'#9c8fd0'},
+  {name:'Charlie', city:'上海', amount:1, time:'5小时前', color:'#7986cb'},
+  {name:'圈圈', city:'深圳', amount:14.1, time:'8小时前', color:'#e0a2c4'},
+  {name:'大鹏', city:'重庆', amount:1, time:'12小时前', color:'#7986cb'},
+  {name:'匿名', city:'—', amount:1, time:'昨天', color:'#7a7d9a'},
+];
+
+let feedData = [...sampleFeed];
+let userCert = JSON.parse(localStorage.getItem('dreamCert') || 'null');
+
+function init(){
+  updateStats();
+  renderFeed();
+  if(userCert) showCert(userCert);
+  document.getElementById('daysRunning').textContent = CONFIG.daysRunning;
+}
+init();
+
+function updateStats(){
+  const total = CONFIG.totalRaised;
+  document.getElementById('totalRaised').textContent = total.toLocaleString();
+  document.getElementById('totalCount').textContent = CONFIG.totalCount.toLocaleString();
+  document.getElementById('todayCount').textContent = CONFIG.todayCount;
+  const pct = Math.min(total / 1410000000 * 100, 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function renderFeed(){
+  const list = document.getElementById('feedList');
+  list.innerHTML = feedData.map(f => {
+    const amtClass = f.amount === 1 ? 'amount-1' : f.amount === 14.1 ? 'amount-14' : 'amount-141';
+    const initial = f.name.charAt(0);
+    return '<li class="feed-item"><div class="avatar" style="background:'+f.color+'22;color:'+f.color+'">'+initial+'</div><div class="info"><div class="name">'+f.name+'</div><div class="meta">'+f.city+' · '+f.time+'</div></div><div class="amount '+amtClass+'">¥'+f.amount+'</div></li>';
+  }).join('');
+}
+
+setInterval(() => {
+  const cities = ['成都','北京','上海','广州','深圳','杭州','武汉','南京','西安','长沙','重庆','厦门'];
+  const names = ['匿名','小Z','Cc','Momo','老王','小野','阿岚','Kit','树懒','J','白','柠檬'];
+  const newOne = {
+    name: names[Math.floor(Math.random()*names.length)],
+    city: cities[Math.floor(Math.random()*cities.length)],
+    amount: [1,1,1,1,14.1,1,1,141,1][Math.floor(Math.random()*9)],
+    time: '刚刚',
+    color: ['#7986cb','#e0a2c4','#9c8fd0'][Math.floor(Math.random()*3)]
+  };
+  feedData.unshift(newOne);
+  if(feedData.length > 30) feedData.pop();
+  renderFeed();
+  CONFIG.totalCount++;
+  CONFIG.totalRaised += newOne.amount;
+  CONFIG.todayCount++;
+  updateStats();
+}, 5000 + Math.random()*3000);
+
+function openModal(amount){
+  if(userCert){ showToast('你已经加入啦！证书在下面 🎖️'); return; }
+  const tierInfo = {1:{title:'🥉 梦想见证官',sub:'¥1 · 数字证书 + 名字上墙'},14.1:{title:'🥈 白银赞助官',sub:'¥14.1 · + 实验日记 + 片尾致谢'},141:{title:'🥇 黄金合伙人',sub:'¥141 · + 纪录片署名 + 干杯'},1410:{title:'👑 终极梦想家',sub:'¥1,410 · + 手写明信片'}};
+  const info = tierInfo[amount] || tierInfo[1];
+  document.getElementById('modalTitle').textContent = info.title;
+  document.getElementById('modalSub').textContent = info.sub;
+  document.getElementById('paymentModal').classList.add('active');
+  document.getElementById('nameInput').value = '';
+  document.getElementById('nameInput').dataset.amount = amount;
+}
+
+function closeModal(){ document.getElementById('paymentModal').classList.remove('active'); }
+
+function onPaid(){
+  const name = document.getElementById('nameInput').value.trim();
+  if(!name){ showToast('请输入你的昵称 ✏️'); return; }
+  const amount = parseFloat(document.getElementById('nameInput').dataset.amount) || 1;
+  const cert = {name, amount, number: CONFIG.totalCount + 1, date: new Date().toLocaleDateString('zh-CN')};
+  userCert = cert;
+  localStorage.setItem('dreamCert', JSON.stringify(cert));
+  closeModal();
+  showCert(cert);
+  feedData.unshift({name, city:'来自页面', amount, time:'刚刚', color:'#d4a853'});
+  renderFeed();
+  CONFIG.totalCount++;
+  CONFIG.totalRaised += amount;
+  updateStats();
+  showToast('🎉 恭喜你成为第 '+cert.number+' 号梦想见证官！');
+}
+
+function showCert(cert){
+  document.getElementById('certNumber').textContent = String(cert.number).padStart(7,'0');
+  document.getElementById('certName').innerHTML = '<span style="font-size:16px;font-weight:600;color:var(--text-bright)">'+cert.name+'</span><span>贡献 ¥'+cert.amount+' · '+cert.date+'</span>';
+}
+
+function showToast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => el.classList.remove('show'), 2500);
+}
+
+document.getElementById('paymentModal').addEventListener('click', function(e){ if(e.target === this) closeModal(); });
+</script>
+</body>
+</html>
